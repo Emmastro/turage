@@ -11,4 +11,4 @@ admin.site.register(Driver, UserAdmin)
 
 admin.site.register(Car)
 admin.site.register(Waypoint)
-admin.site.register(RidingRequest)
+admin.site.register(RideRequest)

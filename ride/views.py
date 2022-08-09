@@ -11,21 +11,28 @@ def home(request):
 
     return redirect('ride-request')
 
+# TODO: separate passenger and driver views into different applications
+# Passenger views
 @method_decorator(login_required, name='dispatch')
 class RideRequestView(CreateView):
     """
     """
 
-    model = RidingRequest
+    model = RideRequest
     fields = "__all__"
     template_name = "request.html"
 
 
-# class DriverViewSet(ModelView):
+# Driver views
 
-#     model = models.Driver.objects.all()
+class RideRequestNearView(ListView):
 
- 
+    model = RideRequest
+    fields = "__all__"
+    template_name = "request_near.html"
+    context_object_name = "ride_requests"
+
+
 # class RidingRequestViewSet(ModelViewSet):
 #     """
 #     TODO: This view needs to support the following scenarios:

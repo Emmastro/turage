@@ -95,25 +95,34 @@ class Driver(TurageUser):
 
         verbose_name = 'Driver'
 
+class Passenger(TurageUser):
+    # TODO: would be community to be more general
+    university = models.CharField(max_length=250)
 
-class RidingRequest(models.Model):
+    class Meta:
+        verbose_name = 'Passenger'
+
+
+class RideRequest(models.Model):
     """
     Represents a request for a ride.
     """
 
     # data collected when making a driving request
-    origin_waypoint = models.ForeignKey(Waypoint, on_delete=models.CASCADE, related_name='start_waypoint')
-    destination_waypoint = models.ForeignKey(Waypoint, on_delete=models.CASCADE, related_name='destination_waypoint')
+    origin_waypoint = models.ForeignKey(Waypoint, on_delete=models.CASCADE, related_name='start_waypoint', null=True)
+    destination_waypoint = models.ForeignKey(Waypoint, on_delete=models.CASCADE, related_name='destination_waypoint', null=True)
     number_passengers = models.IntegerField()
 
-    time_requested = models.DateTimeField(auto_now_add=True)
+    time_requested = models.DateTimeField(auto_now_add=True, null=True)
 
     # the suggested time to leave. We consider by default users wants to leave as soon as possible
     # but they can choose to leave at a later time (in 1h, 2h, 3h, etc)
-    time_to_leave = models.DateTimeField(auto_now_add=True)
+    time_to_leave = models.DateTimeField(auto_now_add=True, null=True)
 
     # Updates When a driver accepts driving request 
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True)
+    passenger = models.ManyToManyField(Passenger, blank=True)
+
     # TODO: status should be a choice field of waiting, accepted or cancelled
     status = models.CharField(max_length=30, default="waiting")
 
@@ -151,12 +160,14 @@ class RidingRequest(models.Model):
         else:
             # TODO: logging.info("check if the requests can be matched")
 
-            super(RidingRequest, self).save(*args, **kwargs)
+            super(RideRequest, self).save(*args, **kwargs)
 
-            self.match_requests()
+            # TODO: remove comment to match the request
+            logging.warning("not checking matching requests")
+            # self.match_requests()
             return
 
-        super(RidingRequest, self).save(*args, **kwargs)
+        super(RideRequest, self).save(*args, **kwargs)
 
     def match_requests(self):
         """
@@ -164,7 +175,7 @@ class RidingRequest(models.Model):
         """ 
 
         # filter request that haven't been accepted by a driver yet
-        pending_reqests = RidingRequest.objects.filter(status="waiting")
+        pending_reqests = RideRequest.objects.filter(status="waiting")
 
         # TODO: Time filter:
         #   filter requests that are  within 30min of the time suggested to leave
@@ -261,19 +272,10 @@ class RidingRequestMatches(models.Model):
 
     TODO: create a logic for how the pricing changes based on the matched requests
     """
-    matches = models.ManyToManyField(RidingRequest)
+    matches = models.ManyToManyField(RideRequest)
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField()
 
     time_accepted = models.DateTimeField(null=True)
     time_cancelled = models.DateTimeField(null=True)
     time_finished = models.DateTimeField(null=True)
-
-
-class Passenger(TurageUser):
-    # TODO: would be community to be more general
-    university = models.CharField(max_length=250)
-    riding_requests = models.ManyToManyField(RidingRequest, blank=True)
-
-    class Meta:
-        verbose_name = 'Passenger'
