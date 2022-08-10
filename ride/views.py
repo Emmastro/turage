@@ -23,7 +23,6 @@ class RideRequestView(CreateView):
     template_name = "request.html"
 
 
-# Driver views
 
 class RideRequestNearView(ListView):
 
