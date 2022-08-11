@@ -8,3 +8,4 @@ urlpatterns = [
     path("ride/request-near/", views.RideRequestNearView.as_view(), name="ride-request-near"),
     path('', views.home, name='home'),
 ]
+

@@ -46,6 +46,8 @@ class Car(models.Model):
     seat_used = models.IntegerField(default=0)
     plate_number = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.model +" " + self.plate_number
 
 class Edge(models.Model):
     """
