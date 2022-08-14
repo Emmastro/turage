@@ -17,3 +17,8 @@ See our [Running Django on Cloud Run (fully managed)](https://cloud.google.com/p
 
 
 gcloud sql databases create turage --instance postgresql
+
+-- Activate virtual environment <br>
+-- Create [superuser](https://ordinarycoders.com/blog/article/django-user-register-login-logout) <br>
+-- Log into the admin board [here](http://127.0.0.1:8000/admin/) using superuser credentials <br>
+-- 
