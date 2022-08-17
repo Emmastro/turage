@@ -14,6 +14,15 @@ def home(request):
 # TODO: separate passenger and driver views into different applications
 # Passenger views
 @method_decorator(login_required, name='dispatch')
+class PassengerRideRequestView(CreateView):
+    """
+    """
+
+    model = RideRequest
+    fields = ['origin_waypoint', 'destination_waypoint', 'passenger']
+    template_name = "passenger_request.html"
+
+@method_decorator(login_required, name='dispatch')
 class RideRequestView(CreateView):
     """
     """
@@ -23,7 +32,6 @@ class RideRequestView(CreateView):
     template_name = "request.html"
 
 
-# Driver views
 
 class RideRequestNearView(ListView):
 
