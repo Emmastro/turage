@@ -18,3 +18,19 @@ migration:
 
 migrate:
 	python manage.py migrate
+
+make demo:
+	rm db.sqlite3
+	make migration
+	make migrate
+	python manage.py demo_data
+
+include .env
+
+deploy:
+	gcloud builds submit --config cloudmigrate.yaml \
+    --substitutions _INSTANCE_NAME=postgresql,_REGION=us-central1
+	gcloud run deploy turage \
+    --platform managed \
+    --region us-central1 \
+    --image gcr.io/${PROJECT_ID}/turage

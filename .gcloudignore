@@ -4,3 +4,4 @@ turage/static/
 db.sqlite3
 .vscode
 __pycache__/
+.git/

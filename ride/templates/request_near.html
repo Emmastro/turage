@@ -27,10 +27,10 @@
                   </tr>
                 </thead>
                 <tbody>
-
                   {% for ride in ride_requests %}
-                    <tr>
-                      <td>
+                  <tr>
+                    <td>
+                      <a href={%url 'ride-request-near-detail' ride.id%}>
                         <div class="d-flex px-3 py-1">
                           <div>
                             <img
@@ -39,20 +39,26 @@
                               alt="avatar image"
                             />
                           </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Alice Vinget</h6>
+                          <div
+                            class="d-flex flex-column justify-content-center"
+                          >
+                            <h6 class="mb-0 text-sm">{{ride.passenger}}</h6>
                             <p
                               class="text-sm font-weight-normal text-secondary mb-0"
                             >
-                              Single request
+                              {%if ride.matched%} Matched request {%else%}
+                              Single request {%endif%}
                             </p>
                           </div>
                         </div>
-                      </td>
-                      <td>
-                        <p class="text-sm font-weight-normal mb-0">14 min away</p>
-                      </td>
-                    </tr>
+                      </a>
+                    </td>
+                    <td>
+                      <p class="text-sm font-weight-normal mb-0">
+                        {{ride.distance}} km
+                      </p>
+                    </td>
+                  </tr>
                   {% endfor %}
                 </tbody>
               </table>

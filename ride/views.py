@@ -31,6 +31,15 @@ class RideRequestNearView(ListView):
     fields = "__all__"
     template_name = "request_near.html"
     context_object_name = "ride_requests"
+    # TODO: how do we check if the request is matched?
+
+
+class RideRequestNearDetailView(DetailView):
+
+    model = RideRequest
+    fields = "__all__"
+    template_name = "request_near_detail.html"
+    context_object_name = "ride_request"
 
 
 # class RidingRequestViewSet(ModelViewSet):
@@ -137,26 +146,4 @@ class RideRequestNearView(ListView):
 #         result = {int(self.request.GET['a']) + int(self.request.GET['b'])}
 #         return Response(status=status.HTTP_201_CREATED, data={'result': result})
 
-
-# class EdgeViewSet(viewsets.ModelViewSet):
-
-#     queryset = models.Edge.objects.all()
-#     serializer_class = serializers.EdgeSerializer
-
-#     # TODO: test return error if extra data are sent on the payload. Check for all views too. [Benson]
-
-
-# class RidingRequestMatchesViewSet(viewsets.ModelViewSet):
-#     """
-#     Match multiple driving requests 
-#     """
-#     queryset = models.RidingRequest.objects.all()
-#     serializer_class = serializers.RidingRequestMatchesSerializer
-
-    
-
-# class CarViewSet(viewsets.ModelViewSet):
-
-#     queryset = models.Car.objects.all()
-#     serializer_class = serializers.CarSerializer
 

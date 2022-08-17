@@ -89,7 +89,7 @@ class Driver(TurageUser):
     driver_license = models.CharField(max_length=50)
     direction = models.IntegerField(default=0)
     # TODO: add additional field for content from the driving licence
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    #car = models.ForeignKey(Car, on_delete=models.CASCADE)
 
     class Meta:
 
@@ -121,7 +121,7 @@ class RideRequest(models.Model):
 
     # Updates When a driver accepts driving request 
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True)
-    passenger = models.ManyToManyField(Passenger, blank=True)
+    passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
 
     # TODO: status should be a choice field of waiting, accepted or cancelled
     status = models.CharField(max_length=30, default="waiting")
@@ -135,9 +135,9 @@ class RideRequest(models.Model):
 
     estimated_time = models.FloatField(null=True, blank=True)
     actual_time = models.FloatField(null=True, blank=True)
-    distance = models.FloatField(null=True, blank=True)
+    distance = models.FloatField(null=True, blank=True) # TODO: handle unit. Default to Km
     # number of riding request this request has been matched with
-    matched = models.IntegerField(default=0) 
+    matched = models.BooleanField(default=False) # TODO: should not be changed outside the RideRequestMatched model
     
 
     def save(self, *args, **kwargs):
@@ -264,7 +264,7 @@ class RideRequest(models.Model):
         return shortest_path
 
         
-class RidingRequestMatches(models.Model):
+class RideRequestMatched(models.Model):
     """
     Represents driving request Matches
     Matched requests can be accepted by a driver as a unit request, thus, should inherit the accepting, cancelling ...
@@ -274,8 +274,17 @@ class RidingRequestMatches(models.Model):
     """
     matches = models.ManyToManyField(RideRequest)
     time_created = models.DateTimeField(auto_now_add=True)
-    time_updated = models.DateTimeField()
+    
+    time_updated = models.DateTimeField(null=True)
 
     time_accepted = models.DateTimeField(null=True)
     time_cancelled = models.DateTimeField(null=True)
     time_finished = models.DateTimeField(null=True)
+
+    def save(self, *args, **kwargs):
+
+        super(RideRequestMatched, self).save(*args, **kwargs)
+        for match in self.matches.all():
+            match.matched = True
+            match.save()
+        
