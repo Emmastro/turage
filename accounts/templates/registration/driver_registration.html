@@ -1,18 +1,6 @@
-<!--
-=========================================================
-* Material Dashboard PRO - v3.0.1
-=========================================================
 
-* Product Page:  https://www.creative-tim.com/product/material-dashboard-pro 
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
+{% load widget_tweaks %}
 
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 {%load static%}
@@ -71,81 +59,17 @@
               </div>
               <div class="card-body">
 
-                <form role="form" class="text-start" action="." method="post" >
+                <form role="form" class="text-start" method="post" >
                   {% csrf_token %}
-                  {{form.errors}}
-                  {{form.success_url}}
+                  {% comment %} {{form.errors}}
+                  {{form.success_url}} {% endcomment %}
                   
-                  <span>BASIC INFORMATION</span><br/>
-                  <div class="input-group input-group-outline my-3">
-                    <label class="form-label">Firstname</label>
-                    <input type="text" class="form-control" name="firstname" required_id="id_firstname">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Lastname</label>
-                    <input type="text" class="form-control" name="lastname" required id="id_lastname">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-control" name="username" required id="id_username">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password" required id="id_password">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Gender</label>
-                    <input type="text" class="form-control" name="gender" required id="id_gender">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Country</label>
-                    <input type="text" class="form-control" name="country" required id="id_country">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">National ID Number</label>
-                    <input type="text" class="form-control" name="national_id" required id="id_national">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" name="phone_number" required id="id_phone_number">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Address</label>
-                    <input type="text" class="form-control" name="address" required id="id_address">
-                  </div>
-
-                  <div class="input-group input-group-outline mb-5">
-                    <label class="form-label">Driving License number</label>
-                    <input type="text" class="form-control" name="driver_license" required id="id_driver_license">
-                  </div>
-                  
-                  <span class="mb-6">CAR INFORMATION</span><br/><br/>
-
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Plate Number</label>
-                    <input type="text" class="form-control" name="plate_number" required id="id_plate_number">
-                  </div>
-
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Number of Seats</label>
-                    <input type="number" class="form-control" name="seats" required id="id_seats" min=1>
-                  </div>
-
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Status</label>
-                    <input type="text" class="form-control" name="status" required id="id_status">
-
-                  </div>
-
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Color</label>
-                    <input type="text" class="form-control" name="color" required id="id_color">
-                  </div>
-
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Model</label>
-                    <input type="text" class="form-control" name="model" required id="id_model">
-                  </div>
+                  {% for field in form.visible_fields %}
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">{{field.label}}</label>
+                      {{field|add_class:'form-control'}}
+                    </div>
+                  {%endfor%}
 
                   <div class="text-center">
                     <input type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2" value="SIGN UP">

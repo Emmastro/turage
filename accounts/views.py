@@ -2,6 +2,7 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
     PasswordResetConfirmView, PasswordResetCompleteView, LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, reverse
+from accounts.forms import DriverRegistrationForm
 
 from ride.models import Passenger, TurageUser, Driver
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -13,12 +14,12 @@ class LoginUser(LoginView):
     next_page = reverse_lazy('ride-request')
 
 class DriverRegistration(CreateView):
-    template_name = "registration/driver_registration.html"
-    model: Driver
-    fields = "__all__"
+    model= Driver
+    form_class = DriverRegistrationForm
+    template_name= "registration/driver_registration.html"
 
-    queryset = Driver.objects.all()
-    next_page = reverse_lazy('ride-request')
+    def get_success_url(self):
+        return reverse_lazy('login')
 
-
+ 
 
