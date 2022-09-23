@@ -1,0 +1,73 @@
+{% extends "base.html" %} {%block content%} {%load static%}
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12 mt-4">
+        <div class="card mb-4">
+          <div class="card-header pb-0 p-3">
+            <h6>Ride requests near you</h6>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th
+                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      Passenger
+                    </th>
+                    <th
+                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                    >
+                      Distance
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for ride in ride_requests %}
+                  <tr>
+                    <td>
+                      <a href={%url 'my-requests-detail' ride.id%}>
+                        <div class="d-flex px-3 py-1">
+                          <div>
+                            <img
+                              src="{%static 'img/team-1.jpg' %}"
+                              class="avatar me-3"
+                              alt="avatar image"
+                            />
+                          </div>
+                          <div
+                            class="d-flex flex-column justify-content-center"
+                          >
+                            <h6 class="mb-0 text-sm">{{ride.passenger}}</h6>
+                            <p
+                              class="text-sm font-weight-normal text-secondary mb-0"
+                            >
+                              {%if ride.matched%} Matched request {%else%}
+                              Single request {%endif%}
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </td>
+                    <td>
+                      <p class="text-sm font-weight-normal mb-0">
+                        {{ride.distance}} km
+                      </p>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{%endblock%}
