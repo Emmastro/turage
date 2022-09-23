@@ -93,13 +93,16 @@ class MyRequestsView(ListView):
 
 class MyRequestsDetailView(DetailView):
     model=RideRequest
+    fields = "__all__"
+    template_name = "my_requests_detail.html"
+    context_object_name = "ride_requests"
 
 class RideRequestNearDetailView(DetailView):
 
     model = RideRequest
     fields = "__all__"
     template_name = "request_near_detail.html"
-    context_object_name = "ride_request"
+    context_object_name = "ride_requests"
 
     def post(self, *args, **kwargs):
         
