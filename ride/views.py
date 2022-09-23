@@ -9,7 +9,7 @@ from .models import *
 def home(request):
     # No home for now
 
-    return redirect('ride-request')
+    return redirect('passenger-ride-request')
 
 # TODO: separate passenger and driver views into different applications
 # Passenger views
