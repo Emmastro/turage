@@ -80,6 +80,20 @@ class MyRequestsDetailView(DetailView):
 
 
 
+class MyRequestsView(ListView):
+    """
+    A passenger view of requests after making one
+    """
+    model = RideRequest
+    fields = "__all__"
+    template_name = "my_requests.html"
+    context_object_name = "ride_requests"
+    # TODO: how do we check if the request is matched?
+
+
+class MyRequestsDetailView(DetailView):
+    model=RideRequest
+
 class RideRequestNearDetailView(DetailView):
 
     model = RideRequest
