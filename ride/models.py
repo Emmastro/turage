@@ -54,7 +54,6 @@ class TurageUser(AbstractUser):
     def short_name(self):
         return self.get_short_name()
 
-
 class Car(models.Model):
     """
     Docstring for Car.
