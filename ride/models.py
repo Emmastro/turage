@@ -85,6 +85,8 @@ class Waypoint(models.Model):
         
         return super().clean()
 
+    def __str__(self) -> str:
+        return self.name
 
 class Driver(TurageUser):
 
@@ -113,7 +115,7 @@ class RideRequest(models.Model):
     # data collected when making a driving request
     origin_waypoint = models.ForeignKey(Waypoint, on_delete=models.CASCADE, related_name='start_waypoint', null=True)
     destination_waypoint = models.ForeignKey(Waypoint, on_delete=models.CASCADE, related_name='destination_waypoint', null=True)
-    number_passengers = models.IntegerField()
+    number_passengers = models.IntegerField(default=1)
 
     time_requested = models.DateTimeField(auto_now_add=True, null=True)
 

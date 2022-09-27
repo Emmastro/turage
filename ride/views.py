@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 
 from .models import *
 
@@ -19,8 +20,15 @@ class PassengerRideRequestView(CreateView):
     """
 
     model = RideRequest
-    fields = ['origin_waypoint', 'destination_waypoint', 'passenger']
+    #form=PassengerRideRequestForm
+    fields = ['origin_waypoint', 'destination_waypoint']
     template_name = "passenger_request.html"
+    success_url = reverse_lazy('my-requests')
+
+    def form_valid(self, form):
+        form.instance.passenger = Passenger.objects.get(pk=self.request.user.pk)
+        return super().form_valid(form)
+    
 
 @method_decorator(login_required, name='dispatch')
 class RideRequestView(CreateView):
@@ -30,7 +38,6 @@ class RideRequestView(CreateView):
     model = RideRequest
     fields = "__all__"
     template_name = "request.html"
-
 
 
 class RideRequestNearView(ListView):
@@ -52,12 +59,17 @@ class MyRequestsView(ListView):
     context_object_name = "ride_requests"
     # TODO: how do we check if the request is matched?
 
+    def get_queryset(self):
+        # filter current user
+        query = RideRequest.objects.filter(passenger__pk=self.request.user.pk)
+        return query
+
 
 class MyRequestsDetailView(DetailView):
     model=RideRequest
     fields = "__all__"
     template_name = "my_requests_detail.html"
-    context_object_name = "ride_requests"
+    context_object_name = "ride_request"
 
 class RideRequestNearDetailView(DetailView):
 

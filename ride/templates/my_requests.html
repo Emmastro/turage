@@ -27,10 +27,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for ride in ride_requests %}
+                  {% for ride_request in ride_requests %}
                   <tr>
                     <td>
-                      <a href={%url 'my-requests-detail' ride.id%}>
+                      <a href={%url 'my-requests-detail' ride_request.id%}>
                         <div class="d-flex px-3 py-1">
                           <div>
                             <img
@@ -42,11 +42,11 @@
                           <div
                             class="d-flex flex-column justify-content-center"
                           >
-                            <h6 class="mb-0 text-sm">{{ride.passenger}}</h6>
+                            <h6 class="mb-0 text-sm">{{ride_request.origin_waypoint}} - {{ride_request.destination_waypoint}}</h6>
                             <p
                               class="text-sm font-weight-normal text-secondary mb-0"
                             >
-                              {%if ride.matched%} Matched request {%else%}
+                              {%if ride_request.matched%} Matched request {%else%}
                               Single request {%endif%}
                             </p>
                           </div>
