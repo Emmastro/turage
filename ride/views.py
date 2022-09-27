@@ -11,7 +11,7 @@ def home(request):
 
     return redirect('passenger-ride-request')
 
-# TODO: separate passenger and driver views into different applications
+#TODO: separate passenger and driver views into different applications
 # Passenger views
 @method_decorator(login_required, name='dispatch')
 class PassengerRideRequestView(CreateView):
@@ -65,6 +65,7 @@ class RideRequestNearDetailView(DetailView):
     fields = "__all__"
     template_name = "request_near_detail.html"
     context_object_name = "ride_requests"
+
 
 
 # class RidingRequestViewSet(ModelViewSet):
