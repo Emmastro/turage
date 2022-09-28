@@ -1,0 +1,33 @@
+{% extends "base.html" %} {%block content%} {%load static%}
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <div class="container-fluid py-4">
+    <div class="row">
+      Request ID: {{ride_request.id}}
+      Origin: {{ride_request.origin_waypoint}}<br>
+      Destination: {{ride_request.destination_waypoint}}<br>
+      Number of passengers: {{ride_request.number_passengers}}<br>
+      Time requested: {{ride_request.time_requested}}<br>
+
+      Time to leave: {{ride_request.time_to_leave}}<br>
+      Driver: {{ride_request.driver}}<br>
+      
+      Passenger username: {{ride_request.passenger.username}}<br>
+      Passenger university (MVP): {{ride_request.passenger.university}}<br>
+
+      Request status: {{ride_request.status}}<br>
+      Request time accepted: {{ride_request.time_accepted}}<br>
+      Request time cancelled (if cancelled): {{ride_request.time_cancelled}}<br>
+      Request time finished (set when finished): {{ride_request.time_finished}}<br>
+      Request price: {{ride_request.price}}<br>
+      Request estimated time: {{ride_request.estimated_time}}<br>
+      Request actual time: {{ride_request.actual_time}}<br>
+      Request distance: {{ride_request.distance}}<br>
+      Request mactched{{ride_request.matched}}<br>
+      
+    </div>
+  </div>
+</main>
+
+{%endblock%}

@@ -9,9 +9,9 @@ from .models import *
 def home(request):
     # No home for now
 
-    return redirect('ride-request')
+    return redirect('passenger-ride-request')
 
-# TODO: separate passenger and driver views into different applications
+#TODO: separate passenger and driver views into different applications
 # Passenger views
 @method_decorator(login_required, name='dispatch')
 class PassengerRideRequestView(CreateView):
@@ -42,12 +42,30 @@ class RideRequestNearView(ListView):
     # TODO: how do we check if the request is matched?
 
 
+class MyRequestsView(ListView):
+    """
+    A passenger view of requests after making one
+    """
+    model = RideRequest
+    fields = "__all__"
+    template_name = "my_requests.html"
+    context_object_name = "ride_requests"
+    # TODO: how do we check if the request is matched?
+
+
+class MyRequestsDetailView(DetailView):
+    model=RideRequest
+    fields = "__all__"
+    template_name = "my_requests_detail.html"
+    context_object_name = "ride_requests"
+
 class RideRequestNearDetailView(DetailView):
 
     model = RideRequest
     fields = "__all__"
     template_name = "request_near_detail.html"
-    context_object_name = "ride_request"
+    context_object_name = "ride_requests"
+
 
 
 # class RidingRequestViewSet(ModelViewSet):
