@@ -21,7 +21,7 @@ class TurageUser(AbstractUser):
     gender = models.CharField(max_length=6, choices=[
                               ('Male', 'M'), ('Female', 'F')], blank=True)
     country = models.CharField(max_length=50, blank=True)
-    national_id = models.IntegerField(null=True, blank=True)
+    national_id = models.CharField(max_length=10, null=True, blank=True)
 
     last_latitude = models.FloatField(null=True, blank=True)
     last_longitude = models.FloatField(null=True, blank=True)
@@ -32,7 +32,6 @@ class TurageUser(AbstractUser):
     class Meta:
 
         verbose_name = 'Abstract User'
-
 
 
 class Car(models.Model):
