@@ -19,7 +19,7 @@ class DriverRegistration(CreateView):
     template_name= "registration/driver_registration.html"
 
     def get_success_url(self):
-        return reverse_lazy('login')
+        return reverse_lazy('ride-request-near')
 
  
 
