@@ -19,7 +19,7 @@ migration:
 migrate:
 	python manage.py migrate
 
-make demo:
+demo:
 	rm db.sqlite3
 	make migration
 	make migrate
