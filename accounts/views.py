@@ -2,7 +2,7 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
     PasswordResetConfirmView, PasswordResetCompleteView, LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, reverse
-from accounts.forms import DriverRegistrationForm
+from accounts.forms import DriverRegistrationForm, PassengerRegistrationForm
 
 from ride.models import Passenger, TurageUser, Driver
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -21,5 +21,12 @@ class DriverRegistration(CreateView):
     def get_success_url(self):
         return reverse_lazy('ride-request-near')
 
- 
+class PassengerRegistration(CreateView):
+    model = Passenger
+    form_class = PassengerRegistrationForm
+    template_name= "registration/passenger_registration.html"
+
+    def get_success_url(self):
+        return reverse_lazy('ride-request-near')
+
 
