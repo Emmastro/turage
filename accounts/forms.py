@@ -18,3 +18,17 @@ class DriverRegistrationForm(forms.ModelForm):
         if commit:
             driver.save()
         return driver
+
+class PassengerRegistrationForm(forms.ModelForm):
+
+    class Meta(object):
+        model = Passenger
+        fields = ["first_name", "last_name", "email", "gender",  "username", "password" , "country", "university", "phone_number"]
+
+    def save(self, commit=True):
+        passenger = super().save(commit=False)
+        passenger.set_password(self.cleaned_data['password'])
+
+        if commit:
+            passenger.save()
+        return passenger
