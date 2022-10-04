@@ -36,5 +36,9 @@ class PassengerRegistrationForm(forms.ModelForm):
 
         if commit:
             passenger.save()
+<<<<<<< HEAD
         return passenger
 >>>>>>> 193c23f (Passenger Registration)
+=======
+        return passenger
+>>>>>>> b3eb8ba (Passenger Registration)

@@ -13,5 +13,8 @@ urlpatterns = [
 =======
     # path("logout/", views.LogoutUser.as_view(), name="logout"),
     path("registration/passenger", views.PassengerRegistration.as_view(), name="Passenger_registration")
+<<<<<<< HEAD
 >>>>>>> 193c23f (Passenger Registration)
+=======
+>>>>>>> b3eb8ba (Passenger Registration)
 ]

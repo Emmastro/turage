@@ -7,7 +7,10 @@ from django.core.mail import send_mail
 =======
 from django.shortcuts import render, redirect, reverse
 from accounts.forms import DriverRegistrationForm, PassengerRegistrationForm
+<<<<<<< HEAD
 >>>>>>> 193c23f (Passenger Registration)
+=======
+>>>>>>> b3eb8ba (Passenger Registration)
 
 from ride.models import Passenger, TurageUser, Driver
 from django.views.generic import CreateView
@@ -43,15 +46,25 @@ class DriverRegistration(CreateView):
         return reverse_lazy('ride-request-near')
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["page_title"] = 'Driver Registration'
         return context
 =======
+=======
+>>>>>>> b3eb8ba (Passenger Registration)
 class PassengerRegistration(CreateView):
     model = Passenger
     form_class = PassengerRegistrationForm
     template_name= "registration/passenger_registration.html"
+<<<<<<< HEAD
+=======
+
+    def get_success_url(self):
+        return reverse_lazy('ride-request-near')
+
+>>>>>>> b3eb8ba (Passenger Registration)
 
     def get_success_url(self):
         return reverse_lazy('passenger-ride-request')
