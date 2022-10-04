@@ -11,5 +11,6 @@ urlpatterns = [
     path("ride/my-requests/<int:pk>", views.MyRequestsDetailView.as_view(), name="my-requests-detail"),
     path("ride/passenger-request", views.PassengerRideRequestView.as_view(), name="passenger-ride-request"),
     path('', views.home, name='home'),
+    path('automotive', views.automotive, name='automotive'),
 ]
 

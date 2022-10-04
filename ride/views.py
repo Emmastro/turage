@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
@@ -12,6 +12,11 @@ def home(request):
 
     return redirect('passenger-ride-request')
 
+
+def automotive(request):
+    
+    return render(request, 'automotive.html')
+
 #TODO: separate passenger and driver views into different applications
 # Passenger views
 @method_decorator(login_required, name='dispatch')
@@ -20,15 +25,16 @@ class PassengerRideRequestView(CreateView):
     """
 
     model = RideRequest
-    #form=PassengerRideRequestForm
     fields = ['origin_waypoint', 'destination_waypoint']
     template_name = "passenger_request.html"
-    success_url = reverse_lazy('my-requests')
 
     def form_valid(self, form):
         form.instance.passenger = Passenger.objects.get(pk=self.request.user.pk)
         return super().form_valid(form)
     
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('my-requests-detail', kwargs={'pk': self.object.pk})
 
 @method_decorator(login_required, name='dispatch')
 class RideRequestView(CreateView):
