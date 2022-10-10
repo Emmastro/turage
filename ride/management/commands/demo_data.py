@@ -6,6 +6,9 @@ import pandas as pd
 
 from django.conf import settings
 
+from ride.utils import add_multiple
+add_multiple
+
 class Command(BaseCommand):
     path = settings.BASE_DIR 
     spreadsheet = path + '/ride/test_data/data_valid.xlsx'
@@ -13,7 +16,6 @@ class Command(BaseCommand):
     mapping = [
         ('cars', Car),
         ('drivers', Driver),
-        ('edges', Edge),
         ('passengers', Passenger),
     ]
 
@@ -53,24 +55,6 @@ class Command(BaseCommand):
         #         match.matches.add(RideRequest.objects.get(id=1))
         #         match.save()
 
-    def demo_driver(self, i):
-        try:
-            driver = Driver(username=f'Driver{i}')
-            driver.set_password(f"Driver{i}")
-            driver.save()
-        except IntegrityError as e:
-            print(f"Driver{i} already exists")
-        return driver
-
-    def demo_passengers(self, i):
-        try:
-            passenger = Passenger(username=f'Passenger{i}')
-            passenger.set_password(f"Passenger{i}")
-            passenger.save()
-        except IntegrityError as e:
-            print(f"Passenger{i} already exists")
-        return passenger
-
     def load_spreadsheet_test_data(self):
         """
         Tests data for each model can be loaded as expected, 
@@ -82,12 +66,27 @@ class Command(BaseCommand):
 
             data = pd.read_excel(self.spreadsheet, sheet_name=sheet_name)
             data.fillna('', inplace=True)
-
+            print(sheet_name, model)
+            print(data)
             if sheet_name == 'drivers':
                 cars = data['car']
                 data.drop(columns=['car'], inplace=True)
-            for row in data.to_dict('records'):
-                response_code = row.pop('response_code')
-                
+            for i, row in enumerate(data.to_dict('records')):
+                if sheet_name in ('drivers', 'passengers'):
+                    password = row.pop('password')
+                    
                 instance = model.objects.create(**row)
+
+                if sheet_name in ('drivers', 'passengers'):
+                    instance.set_password(password)
+
+                if sheet_name=='drivers':
+                    instance.car = Car.objects.get(pk=cars[i])
+
+
                 instance.save()
+        
+        # add location
+        waypoints = pd.read_excel(self.spreadsheet, sheet_name='waypoints')
+        edges = pd.read_excel(self.spreadsheet, sheet_name='edges')
+        add_multiple(waypoints, edges)
