@@ -1,4 +1,5 @@
 SHELL := /bin/bash
+include .env
 
 create_environment:
 	python3 -m venv env
@@ -24,8 +25,7 @@ demo:
 	make migration
 	make migrate
 	python manage.py demo_data
-
-include .env
+	python manage.py createsuperuser --noinput
 
 deploy:
 	gcloud builds submit --config cloudmigrate.yaml \
