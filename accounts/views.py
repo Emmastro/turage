@@ -27,6 +27,6 @@ class PassengerRegistration(CreateView):
     template_name= "registration/passenger_registration.html"
 
     def get_success_url(self):
-        return reverse_lazy('ride-request-near')
+        return reverse_lazy('passenger-ride-request')
 
 
