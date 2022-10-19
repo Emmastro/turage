@@ -21,7 +21,7 @@ migrate:
 	python manage.py migrate
 
 demo:
-	rm db.sqlite3
+	rm -f db.sqlite3
 	make migration
 	make migrate
 	python manage.py demo_data
