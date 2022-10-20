@@ -14,11 +14,13 @@ def home(request):
 
 
 def automotive(request):
-    
+
     return render(request, 'automotive.html')
 
-#TODO: separate passenger and driver views into different applications
+# TODO: separate passenger and driver views into different applications
 # Passenger views
+
+
 @method_decorator(login_required, name='dispatch')
 class PassengerRideRequestView(CreateView):
     """
@@ -29,12 +31,13 @@ class PassengerRideRequestView(CreateView):
     template_name = "passenger_request.html"
 
     def form_valid(self, form):
-        form.instance.passenger = Passenger.objects.get(pk=self.request.user.pk)
+        form.instance.passenger = Passenger.objects.get(
+            pk=self.request.user.pk)
         return super().form_valid(form)
-    
-    
+
     def get_success_url(self) -> str:
         return reverse_lazy('my-requests-detail', kwargs={'pk': self.object.pk})
+
 
 @method_decorator(login_required, name='dispatch')
 class RideRequestView(CreateView):
@@ -72,10 +75,11 @@ class MyRequestsView(ListView):
 
 
 class MyRequestsDetailView(DetailView):
-    model=RideRequest
+    model = RideRequest
     fields = "__all__"
     template_name = "my_requests_detail.html"
     context_object_name = "ride_request"
+
 
 class RideRequestNearDetailView(DetailView):
 
@@ -83,7 +87,6 @@ class RideRequestNearDetailView(DetailView):
     fields = "__all__"
     template_name = "request_near_detail.html"
     context_object_name = "ride_requests"
-
 
 
 # class RidingRequestViewSet(ModelViewSet):
@@ -111,7 +114,6 @@ class RideRequestNearDetailView(DetailView):
 #         return Response(status=status.HTTP_202_ACCEPTED)
 
 
-
 def add_connection(Srequest, *args, **kwargs):
     """
     Adds waypoints and edges data to an existing waypoint
@@ -127,6 +129,3 @@ def add_connection(Srequest, *args, **kwargs):
     waypoint.edges.add(*edges)
     waypoint.full_clean()
     waypoint.save()
-
-
-

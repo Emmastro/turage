@@ -1,10 +1,8 @@
 {% extends 'registration/base_auth.html' %}
 {% load widget_tweaks %}
-{%load static%}
-
 {%block content%}
 <form role="form" class="text-start" method="post">
-  {% csrf_token %} {% comment %} {{form.errors}} {{form.success_url}} {%endcomment %} 
+  {% csrf_token %} {% comment %} {{form.errors}} {{form.success_url}} {%endcomment %}
   {% for field in form.visible_fields %}
   <div class="input-group input-group-outline my-3">
     <label class="form-label">{{field.label}}</label>
@@ -23,8 +21,9 @@
   <p class="mt-4 text-sm text-center">
     Already have an account?
     <a href={%url 'login'%} class="text-primary text-gradient font-weight-bold"
-      >Sign in</a>
-      Not a driver? <a href={%url 'passenger_registration'%} class="text-primary text-gradient font-weight-bold"> Register as a Passenger</a>
+      >Sign in</a
+    >
+    Not a passenger? <a href={%url 'driver_registration'%} class="text-primary text-gradient font-weight-bold"> Register as a Driver</a>
   </p>
   <input type="hidden" name="next" value="{{ next }}" />
 </form>
