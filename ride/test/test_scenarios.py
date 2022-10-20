@@ -49,8 +49,9 @@ class ScenarioTests(APITestCase):
                     object_count = model.objects.count()
                     response = self.client.post(url, row, format='json')
 
-                    self.assertEqual(response.status_code, response_code, msg=response.data)
+                    self.assertEqual(response.status_code,
+                                     response_code, msg=response.data)
 
                     self.assertEqual(model.objects.count(
                     ), object_count + (response_code == status.HTTP_201_CREATED),
-                    msg=f'The post request for {model} failed to add an entry on the database')
+                        msg=f'The post request for {model} failed to add an entry on the database')

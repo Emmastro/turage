@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 import logging
 
 from django.db import models
@@ -8,8 +9,6 @@ from django.core.exceptions import ValidationError
 
 ALLOWED_TIME_DIFFERENCE = 30
 
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 
 # TODO: move user related models to accounts
 
@@ -46,7 +45,8 @@ class Car(models.Model):
     plate_number = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.model +" " + self.plate_number
+        return self.model + " " + self.plate_number
+
 
 class Edge(models.Model):
     """
@@ -81,11 +81,12 @@ class Waypoint(models.Model):
 
         if self.name == '':
             raise ValidationError('Empty error message')
-        
+
         return super().clean()
 
     def __str__(self) -> str:
         return self.name
+
 
 class Driver(TurageUser):
 
@@ -97,6 +98,7 @@ class Driver(TurageUser):
     class Meta:
 
         verbose_name = 'Driver'
+
 
 class Passenger(TurageUser):
     # TODO: would be community to be more general
@@ -112,8 +114,10 @@ class RideRequest(models.Model):
     """
 
     # data collected when making a driving request
-    origin_waypoint = models.ForeignKey(Waypoint, on_delete=models.CASCADE, related_name='start_waypoint', null=True)
-    destination_waypoint = models.ForeignKey(Waypoint, on_delete=models.CASCADE, related_name='destination_waypoint', null=True)
+    origin_waypoint = models.ForeignKey(
+        Waypoint, on_delete=models.CASCADE, related_name='start_waypoint', null=True)
+    destination_waypoint = models.ForeignKey(
+        Waypoint, on_delete=models.CASCADE, related_name='destination_waypoint', null=True)
     number_passengers = models.IntegerField(default=1)
 
     time_requested = models.DateTimeField(auto_now_add=True, null=True)
@@ -122,7 +126,7 @@ class RideRequest(models.Model):
     # but they can choose to leave at a later time (in 1h, 2h, 3h, etc)
     time_to_leave = models.DateTimeField(auto_now_add=True, null=True)
 
-    # Updates When a driver accepts driving request 
+    # Updates When a driver accepts driving request
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True)
     passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
 
@@ -138,10 +142,11 @@ class RideRequest(models.Model):
 
     estimated_time = models.FloatField(null=True, blank=True)
     actual_time = models.FloatField(null=True, blank=True)
-    distance = models.FloatField(null=True, blank=True) # TODO: handle unit. Default to Km
+    # TODO: handle unit. Default to Km
+    distance = models.FloatField(null=True, blank=True)
     # number of riding request this request has been matched with
-    matched = models.BooleanField(default=False) # TODO: should not be changed outside the RideRequestMatched model
-    
+    # TODO: should not be changed outside the RideRequestMatched model
+    matched = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         """
@@ -152,7 +157,7 @@ class RideRequest(models.Model):
 
         if self.status == 'accepted':
             self.time_accepted = datetime.now(tz=timezone.utc)
-            #alternative for datetime.now(tz=timezone.utc) ==> datetime.utcnow()
+            # alternative for datetime.now(tz=timezone.utc) ==> datetime.utcnow()
         elif self.status == 'finished':
             self.time_finished = datetime.now(tz=timezone.utc)
 
@@ -175,7 +180,7 @@ class RideRequest(models.Model):
     def match_requests(self):
         """
             Check available driving requests to match
-        """ 
+        """
 
         # filter request that haven't been accepted by a driver yet
         pending_reqests = RideRequest.objects.filter(status="waiting")
@@ -186,22 +191,25 @@ class RideRequest(models.Model):
 
         def filter_time(request):
 
-            time_diff = (request.time_to_leave-self.time_to_leave).total_seconds()/60
-            if time_diff < ALLOWED_TIME_DIFFERENCE: 
+            time_diff = (request.time_to_leave -
+                         self.time_to_leave).total_seconds()/60
+            if time_diff < ALLOWED_TIME_DIFFERENCE:
                 return True
             return False
 
-        # list of all pending requests within the time the current request wants to leave 
+        # list of all pending requests within the time the current request wants to leave
         pending_reqests = filter(filter_time, pending_reqests)
-        
-        # Will contain the 
+
+        # Will contain the
         pending_request_shortest_paths = []
         for pending_request in list(pending_reqests):
 
             pending_request_shortest_paths.append(
-                self.get_shortest_path(pending_request.origin_waypoint, pending_request.destination_waypoint)
-                )
-        pending_request_shortest_paths = ["".join(x) for x in pending_request_shortest_paths]
+                self.get_shortest_path(
+                    pending_request.origin_waypoint, pending_request.destination_waypoint)
+            )
+        pending_request_shortest_paths = [
+            "".join(x) for x in pending_request_shortest_paths]
         matches = []
         for i, path_i in enumerate(pending_request_shortest_paths):
             for j, path_j in enumerate(pending_request_shortest_paths):
@@ -213,28 +221,29 @@ class RideRequest(models.Model):
     def get_shortest_path(self, waypoint1, waypoint2):
         """
         return: shortest path between the origin point of a request and the destination
-        """    
+        """
 
         path = {}
         adj_node = {}
         queue = []
         waypoints = Waypoint.objects.all()
         waypoint1, waypoint2 = waypoint1.name, waypoint2.name
-        logging.info(f"Searching shortest path for {waypoint1} and {waypoint2}")
+        logging.info(
+            f"Searching shortest path for {waypoint1} and {waypoint2}")
 
         for node in waypoints:
             path[node.name] = float("inf")
             adj_node[node.name] = None
             queue.append(node.name)
-            
+
         path[waypoint1] = 0
-        
-        while queue:        
+
+        while queue:
             key_min = queue[0]
             min_val = path[key_min]
             for n in range(1, len(queue)):
                 if path[queue[n]] < min_val:
-                    key_min = queue[n]  
+                    key_min = queue[n]
                     min_val = path[key_min]
             cur = key_min
             queue.remove(cur)
@@ -242,13 +251,13 @@ class RideRequest(models.Model):
             for waypoint, edge in zip(
                 Waypoint.objects.get(name=cur).waypoints.all(),
                 Waypoint.objects.get(name=cur).edges.all()
-                ):
+            ):
 
                 alternate = edge.distance + path[cur]
-                
+
                 if path[waypoint.name] > alternate:
                     path[waypoint.name] = alternate
-                    adj_node[waypoint.name] = cur 
+                    adj_node[waypoint.name] = cur
 
             #logging.info(f"PATH {path}")
             #logging.info(f"ADJ {adj_node}")
@@ -266,7 +275,7 @@ class RideRequest(models.Model):
         logging.info(f"Shortest path found: {shortest_path}")
         return shortest_path
 
-        
+
 class RideRequestMatched(models.Model):
     """
     Represents driving request Matches
@@ -277,7 +286,7 @@ class RideRequestMatched(models.Model):
     """
     matches = models.ManyToManyField(RideRequest)
     time_created = models.DateTimeField(auto_now_add=True)
-    
+
     time_updated = models.DateTimeField(null=True)
 
     time_accepted = models.DateTimeField(null=True)
@@ -290,4 +299,3 @@ class RideRequestMatched(models.Model):
         for match in self.matches.all():
             match.matched = True
             match.save()
-        
