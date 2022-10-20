@@ -9,8 +9,9 @@ from django.conf import settings
 from ride.utils import add_multiple
 add_multiple
 
+
 class Command(BaseCommand):
-    path = settings.BASE_DIR 
+    path = settings.BASE_DIR
     spreadsheet = path + '/ride/test_data/data_valid.xlsx'
     print(spreadsheet)
     mapping = [
@@ -74,18 +75,17 @@ class Command(BaseCommand):
             for i, row in enumerate(data.to_dict('records')):
                 if sheet_name in ('drivers', 'passengers'):
                     password = row.pop('password')
-                    
+
                 instance = model.objects.create(**row)
 
                 if sheet_name in ('drivers', 'passengers'):
                     instance.set_password(password)
 
-                if sheet_name=='drivers':
+                if sheet_name == 'drivers':
                     instance.car = Car.objects.get(pk=cars[i])
 
-
                 instance.save()
-        
+
         # add location
         waypoints = pd.read_excel(self.spreadsheet, sheet_name='waypoints')
         edges = pd.read_excel(self.spreadsheet, sheet_name='edges')
