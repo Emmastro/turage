@@ -32,7 +32,7 @@ TODO: inject Creative-tim copyright note-->
 <nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 shadow-none border-radius-xl z-index-sticky" id="navbarBlur" data-scroll="true">
   <div class="container-fluid py-1 px-3">
     <nav aria-label="breadcrumb">
-      <h2>TURAGE</h2>     
+      <h2 class="text-gradient-primary">TURAGE DRIVER</h2>     
       
     </nav>    
     
@@ -55,25 +55,14 @@ TODO: inject Creative-tim copyright note-->
           
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
+            
             <li class="mb-2">
-              <a class="dropdown-item border-radius-md" href={% url 'passenger-ride-request' %}>
-                <div class="d-flex align-items-center py-1">
-                  <span class="material-icons">phone_android</span>
-                  <div class="ms-2">
-                    <h6 class="text-sm font-weight-normal my-auto">
-                      Make request
-                    </h6>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li class="mb-2">
-              <a class="dropdown-item border-radius-md" href={% url 'my-requests' %}>
+              <a class="dropdown-item border-radius-md" href={% url 'ride-request-near' %}>
                 <div class="d-flex align-items-center py-1">
                   <span class="material-icons">directions_car</span>
                   <div class="ms-2">
                     <h6 class="text-sm font-weight-normal my-auto">
-                      My Requests
+                      Request near
                     </h6>
                   </div>
                 </div>

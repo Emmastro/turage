@@ -10,12 +10,20 @@ from django.views.generic import CreateView
 class LoginUser(LoginView):
     template_name = "registration/login.html"
     model = TurageUser
-    next_page = reverse_lazy('ride-request')
+    # next_page = reverse_lazy('passenger-ride-request')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["page_title"] = 'Login'
         return context
+    
+    def get_success_url(self):
+        print(self.request.user)
+        if self.request.user == 'driver1' :
+            print("TRUE")
+        else : 
+            print("NOOOO")
+        return reverse_lazy('passenger-ride-request')
 
 
 class LogoutUser(LogoutView):
