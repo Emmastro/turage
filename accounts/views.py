@@ -19,6 +19,10 @@ from django.views.generic import CreateView
 class LoginUser(LoginView):
     template_name = "registration/login.html"
     model = TurageUser
+<<<<<<< HEAD
+=======
+    # next_page = reverse_lazy('passenger-ride-request')
+>>>>>>> 64ebfd8 (Implemented redesign changes)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -26,11 +30,20 @@ class LoginUser(LoginView):
         return context
     
     def get_success_url(self):
+<<<<<<< HEAD
 
         if self.request.user.role == TurageUser.PASSENGER:
             return reverse_lazy('ride-request')
         elif self.request.user.role == TurageUser.DRIVER:
             return reverse_lazy('ride-request-near')
+=======
+        print(self.request.user)
+        if self.request.user == 'driver1' :
+            print("TRUE")
+        else : 
+            print("NOOOO")
+        return reverse_lazy('passenger-ride-request')
+>>>>>>> 64ebfd8 (Implemented redesign changes)
 
 
 class LogoutUser(LogoutView):

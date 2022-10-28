@@ -102,7 +102,7 @@ class RideRequestNearDetailView(DetailView):
     model = RideRequest
     fields = "__all__"
     template_name = "request_near_detail.html"
-    context_object_name = "ride_requests"
+    context_object_name = "ride_request"
 
     def post(self, *args, **kwargs):
         

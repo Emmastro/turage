@@ -4,6 +4,7 @@
 >
   <div class="container-fluid py-4">
     <div class="row">
+<<<<<<< HEAD
       <div class="col-lg-8 mx-auto">
         <div class="card mb-4">
           <div class="card-header p-3 pb-0">
@@ -26,6 +27,13 @@
                 </p>
               </div>
             </div>
+=======
+      <!-- Request ID: {{ride_request.id}}<br>
+      Origin: {{ride_request.origin_waypoint}}<br>
+      Destination: {{ride_request.destination_waypoint}}<br>
+      Number of passengers: {{ride_request.number_passengers}}<br>
+      Time requested: {{ride_request.time_requested}}<br>
+>>>>>>> 64ebfd8 (Implemented redesign changes)
 
             <div class="card-body p-3 pt-0">
               <hr class="horizontal dark mt-0 mb-4" />
@@ -45,6 +53,7 @@
               </div>
               <hr class="horizontal dark mt-4 mb-4" />
 
+<<<<<<< HEAD
               <div class="row">
                 <div class="col-lg-3 col-md-6 col-12">
                   <h6 class="mb-3">Track request</h6>
@@ -64,11 +73,89 @@
                         >
                           {{ride_request.time_to_leave}}
                         </p>
+=======
+      Request status: {{ride_request.status}}<br>
+      Request time accepted: {{ride_request.time_accepted}}<br>
+      Request time cancelled (if cancelled): {{ride_request.time_cancelled}}<br>
+      Request time finished (set when finished): {{ride_request.time_finished}}<br>
+      Request price: {{ride_request.price}}<br>
+      Request estimated time: {{ride_request.estimated_time}}<br>
+      Request actual time: {{ride_request.actual_time}}<br>
+      Request distance: {{ride_request.distance}}<br>
+      Request mactched{{ride_request.matched}}<br> -->
+      
+      <div class="col-lg-8 mx-auto">
+
+        <div class="card mb-4">
+          <div class="card-header p-3 pb-0">
+          <div class="d-flex justify-content-between align-items-center">
+          <div class="w-50">
+
+            <a class="btn" href={% url 'my-requests' %}>
+              <div class="d-flex align-items-center py-1">
+                <span class="material-icons">arrow_back</span>
+                <div class="ms-2">
+                  <h6 class="text-sm font-weight-normal my-auto">
+                    BACK
+                  </h6>
+                </div>
+              </div>
+
+            </a>
+
+            <h4>Request Details</h4>
+            <p class="text-md mb-0">
+            Request no. <b>{{ride_request.id}}</b> 
+            </p>
+            <p class="text-md mb-0">
+            Request Time: <b>{{ride_request.time_requested}}</b>
+            </p>          
+          
+
+        </div>
+          </div>
+
+          <div class="card-body p-3 pt-0">
+            <hr class="horizontal dark mt-0 mb-4">
+
+            <div class="row">
+            <div class="col-lg-6 col-md-6 col-12">
+            <div class="d-flex">
+              <div>
+              </div>
+              <div>
+                <h2 class="text-xl mb-0 mt-2">{{ride_request.passenger.username}}</h2>
+                <p class="text-sm mb-3 mt-4">{{ride_request.passenger.university}}</p>
+              </div>
+            </div>
+            </div>
+            <!-- <div class="col-lg-6 col-md-6 col-12 my-auto text-end">
+            <a href="javascript:;" class="btn bg-gradient-dark btn-sm mb-0">Contact Us</a>
+            <p class="text-sm mt-2 mb-0">Do you like the product? Leave us a review <a href="javascript:;">here</a>.</p>
+            </div> -->
+            </div>
+
+            <hr class="horizontal dark mt-4 mb-4">
+
+            <div class="row">
+              <div class="col-lg-3 col-md-6 col-12">
+                <h6 class="mb-3">Track request</h6>
+
+                  <div class="timeline timeline-one-side">
+                    <div class="timeline-block mb-3">
+                      <span class="timeline-step">
+                      <i class="material-icons text-secondary text-lg">location_on</i>
+                      </span>
+                      <div class="timeline-content">
+                      <h6 class="text-dark text-sm font-weight-bold mb-0">{{ride_request.origin_waypoint}}</h6>
+                      <p class="text-secondary font-weight-normal text-xs mt-1 mb-0">{{ride_request.time_to_leave}}</p>
+>>>>>>> 64ebfd8 (Implemented redesign changes)
                       </div>
                     </div>
 
                     <div class="timeline-block mb-3">
                       <span class="timeline-step">
+<<<<<<< HEAD
                         <i class="material-icons text-secondary text-lg"
                           >location_on</i
                         >
@@ -134,6 +221,60 @@
           </div>
         </div>
       </div>
+=======
+                      <i class="material-icons text-secondary text-lg">location_on</i>
+                      </span>
+                      <div class="timeline-content">
+                      <h6 class="text-dark text-sm font-weight-bold mb-0">{{ride_request.destination_waypoint}}</h6>
+                      <p class="text-secondary font-weight-normal text-xs mt-1 mb-0">22 DEC 7:21 AM</p>
+                      </div>
+                    </div>   
+                    
+                  </div>
+                  <h6>200km</h6>
+
+              </div>
+
+              <div class="col-lg-5 col-md-6 col-12">             
+
+                <h6 class="mb-3">Ride details</h6>
+                
+                <ul class="list-group">
+                  <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                    <div class="d-flex flex-column">
+                      <span class="mb-2 text-xs">Driver Name: <span class="text-dark font-weight-bold ms-2">{{ride_request.driver}}</span></span>
+                      <span class="mb-2 text-xs">Request Price: <span class="text-dark ms-2 font-weight-bold">{{ride_request.price}}</span></span>
+                      <span class="text-xs">Request estimated time: <span class="text-dark ms-2 font-weight-bold">{{ride_request.estimated_time}}</span></span>
+
+                    </div>
+
+                  </li>
+
+                </ul>
+
+              </div>
+
+
+              <div class="col-lg-3 col-12 ms-auto">
+                <h6 class="mb-3">Request Status</h6>
+                <div class="d-flex justify-content-between">
+                  <span class="mb-2 text-sm">
+                      Status:
+                  </span>
+
+                  <span class="badge badge-sm bg-gradient-success d-flex justify-content-center align-items-center">{{ride_request.status}}</span>
+                </div>
+
+                                
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+>>>>>>> 64ebfd8 (Implemented redesign changes)
     </div>
   </div>
 </main>
