@@ -1,96 +1,30 @@
 {% extends "base.html" %} {%block content%} {%load static%}
-
-<head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
-  rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
-  crossorigin="anonymous">
-  
-</head>
 <main
   class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
 >
   <div class="container-fluid py-4">
     <div class="row">
-      Request ID: {{ride_request.id}}<br><br><br>
-
-      <div class="container">
-        <div class="row">
-          <div class="col">
-      Pick-up point: {{ride_request.origin_waypoint}}<br>
-          </div>
-          <div class="col">
-      Drop off point: {{ride_request.destination_waypoint}}<br><br><br>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col">
-      Number of passengers: {{ride_request.number_passengers}}<br><br><br>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col">
+      Request ID: {{ride_request.id}}<br>
+      Origin: {{ride_request.origin_waypoint}}<br>
+      Destination: {{ride_request.destination_waypoint}}<br>
+      Number of passengers: {{ride_request.number_passengers}}<br>
       Time requested: {{ride_request.time_requested}}<br>
-          </div>
 
-          <div class="col">
-      Time to leave: {{ride_request.time_to_leave}}<br><br><br>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col">
-      Driver: {{ride_request.driver}}<br><br><br>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col">
+      Time to leave: {{ride_request.time_to_leave}}<br>
+      Driver: {{ride_request.driver}}<br>
+      
       Passenger username: {{ride_request.passenger.username}}<br>
-          </div>
-      
-          <div class="col">
-      Passenger university (MVP): {{ride_request.passenger.university}}<br><br><br>
-          </div>
-        </div>
-      </div>
+      Passenger university (MVP): {{ride_request.passenger.university}}<br>
 
-      
-
-      <!-- Request time accepted: {{ride_request.time_accepted}}<br>
+      Request status: {{ride_request.status}}<br>
+      Request time accepted: {{ride_request.time_accepted}}<br>
       Request time cancelled (if cancelled): {{ride_request.time_cancelled}}<br>
-      Request time finished (set when finished): {{ride_request.time_finished}}<br> -->
-
-      <div class="container">
-        <div class="row">
-          <div class="col">
-      Request price: {{ride_request.price}}<br><br><br>
-          </div>
-        </div>
-      </div>
-
-      <!-- Request estimated time: {{ride_request.estimated_time}}<br>
+      Request time finished (set when finished): {{ride_request.time_finished}}<br>
+      Request price: {{ride_request.price}}<br>
+      Request estimated time: {{ride_request.estimated_time}}<br>
       Request actual time: {{ride_request.actual_time}}<br>
-      Request distance: {{ride_request.distance}}<br> -->
-
-      <div class="container">
-        <div class="row">
-          <div class="col">
-      Request status: {{ride_request.status}}<br><br><br>
-          </div>
-        </div>
-      </div>
-
-      <!-- Request matched: {{ride_request.matched}}<br> -->
+      Request distance: {{ride_request.distance}}<br>
+      Request matched: {{ride_request.matched}}<br>
       
     </div>
   </div>
