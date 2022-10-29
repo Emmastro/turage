@@ -10,7 +10,7 @@ from .models import *
 def home(request):
     # No home for now
 
-    return redirect('passenger-ride-request')
+    return redirect('ride-request')
 
 def handler404(request, exception):
     return render(request, '404.html', status=404)
