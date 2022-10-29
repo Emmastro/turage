@@ -54,7 +54,6 @@ class RideRequestNearView(ListView):
     fields = "__all__"
     template_name = "request_near.html"
     context_object_name = "ride_requests"
-    # TODO: how do we check if the request is matched?
 
 
 class MyRequestsView(ListView):
@@ -96,42 +95,15 @@ class RideRequestNearDetailView(DetailView):
         try:
             if self.request.POST['cancel'] == '1':
                 pass
-                # TODO: should hide the request from this particular driver (or put it on the botton of the list)
+                # TODO: should hide the request from this particular driver (or put it on the bottom of the list)
                 #self.object.set_status_cancelled()
         except Exception as e:
-            print(e)
-            print(self.request.POST)
+
             if self.request.POST['pickup'] == '1':
                 self.object.set_status_accepted()
         else:
             pass
         return render(self.request, self.template_name, self.get_context_data())
-
-
-# class RidingRequestViewSet(ModelViewSet):
-#     """
-#     TODO: This view needs to support the following scenarios:
-#         - Driver accepts request
-#         - Passenger cancels request
-#         - Driver cancels request
-#         - Admin check all driving requests
-#     """
-
-#     queryset = models.RidingRequest.objects.all()
-#     serializer_class = serializers.RidingRequestSerializer
-
-#     # TODO: override the function for adding a driving request
-
-
-#     @action(detail=False, methods=['POST'], name='accept')
-#     def accept(self, request, *args, **kwargs):
-#         riding = models.RidingRequest.objects.get(id=request.data['pk'])
-#         riding.driver = models.Driver.objects.get(id=request.data['driver'])
-#         riding.status = "accepted"
-#         riding.full_clean()
-#         riding.save()
-#         return Response(status=status.HTTP_202_ACCEPTED)
-
 
 def add_connection(request, *args, **kwargs):
     """
