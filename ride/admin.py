@@ -6,7 +6,7 @@ from django.contrib.auth.admin import UserAdmin
 
 
 admin.site.register(TurageUser, UserAdmin)
-admin.site.register(Passenger, UserAdmin)
+admin.site.register(Passenger)
 admin.site.register(Driver, UserAdmin)
 
 admin.site.register(Car)
