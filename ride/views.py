@@ -10,7 +10,7 @@ from .models import *
 def home(request):
     # No home for now
 
-    return redirect('passenger-ride-request')
+    return redirect('ride-request')
 
 
 def automotive(request):
@@ -27,7 +27,7 @@ class PassengerRideRequestView(CreateView):
     """
 
     model = RideRequest
-    fields = ['origin_waypoint', 'destination_waypoint']
+    fields = ['origin_waypoint', 'destination_waypoint', 'time_to_leave']
     template_name = "passenger_request.html"
 
     def form_valid(self, form):
@@ -37,16 +37,6 @@ class PassengerRideRequestView(CreateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy('my-requests-detail', kwargs={'pk': self.object.pk})
-
-
-@method_decorator(login_required, name='dispatch')
-class RideRequestView(CreateView):
-    """
-    """
-
-    model = RideRequest
-    fields = "__all__"
-    template_name = "request.html"
 
 
 class RideRequestNearView(ListView):
@@ -114,7 +104,7 @@ class RideRequestNearDetailView(DetailView):
 #         return Response(status=status.HTTP_202_ACCEPTED)
 
 
-def add_connection(Srequest, *args, **kwargs):
+def add_connection(request, *args, **kwargs):
     """
     Adds waypoints and edges data to an existing waypoint
     """
