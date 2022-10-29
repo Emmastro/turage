@@ -96,30 +96,21 @@
             </p>
             <p class="text-md mb-0">
             Request Time: <b>{{ride_request.time_requested}}</b>
-            </p>          
-          
-
+            </p>
         </div>
           </div>
 
           <div class="card-body p-3 pt-0">
             <hr class="horizontal dark mt-0 mb-4">
-
             <div class="row">
             <div class="col-lg-6 col-md-6 col-12">
             <div class="d-flex">
               <div>
-              </div>
-              <div>
-                <h2 class="text-xl mb-0 mt-2">{{ride_request.passenger.username}}</h2>
+                <h2 class="text-xl mb-0 mt-2">{{ride_request.passenger.short_name}}</h2>
                 <p class="text-sm mb-3 mt-4">{{ride_request.passenger.university}}</p>
               </div>
             </div>
             </div>
-            <!-- <div class="col-lg-6 col-md-6 col-12 my-auto text-end">
-            <a href="javascript:;" class="btn bg-gradient-dark btn-sm mb-0">Contact Us</a>
-            <p class="text-sm mt-2 mb-0">Do you like the product? Leave us a review <a href="javascript:;">here</a>.</p>
-            </div> -->
             </div>
 
             <hr class="horizontal dark mt-4 mb-4">
@@ -274,7 +265,7 @@
                     </div>   
                     
                   </div>
-                  <h6>200km</h6>
+                  <h6>{{ride_request.to_string_distance}}</h6>
 
               </div>
 
