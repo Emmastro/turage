@@ -127,6 +127,13 @@ class Driver(TurageUser):
         self.role = TurageUser.DRIVER
         super(TurageUser, self).save(*args, **kwargs)
 
+    @property
+    def short_name(self):
+        n = self.get_short_name()
+        if not n:
+            return "Not assigned"
+        return n
+
     class Meta:
         verbose_name = 'Driver'
 
@@ -179,28 +186,34 @@ class RideRequest(models.Model):
     # TODO: should not be changed outside the RideRequestMatched model
     matched = models.BooleanField(default=False)
 
+    def set_status_accepted(self):
+        self.status = "accepted"
+        send_email("Ride request accepted", "Your ride request has been accepted", self.passenger.email)
+
+        self.time_accepted = timezone.now()
+        self.save()
+
+    def set_status_cancelled(self):
+        self.status = "cancelled"
+        self.time_cancelled = timezone.now()
+        send_email("Ride request cancelled", "Your ride request has been cancelled", self.passenger.email)
+
+        self.save()
+
+    def set_status_finished(self):
+        self.status = "finished"
+        self.time_finished = timezone.now()
+        send_email("Ride request finished", "Your ride request has been finished", self.passenger.email)
+
+        self.save()
+
     def save(self, *args, **kwargs):
         """
         Save a Riding request, and try to match with existing requests. If there is no match,
         the matched field would stay False. This would allow on the next RidingRequest.save() 
         from a different request to try to match again.
         """
-
-        if self.status == 'accepted':
-            self.time_accepted = datetime.now(tz=timezone.utc)
-            # alternative for datetime.now(tz=timezone.utc) ==> datetime.utcnow()
-            send_email("Ride request accepted", "Your ride request has been accepted", self.passenger.email)
-
-        elif self.status == 'finished':
-            self.time_finished = datetime.now(tz=timezone.utc)
-            send_email("How was the ride?", "Feedback on the ride", self.passenger.email)
-
-        elif self.status == 'cancelled':
-            # TODO: should allow both drivers and passengers to cancel a request
-            self.time_cancelled = datetime.now(tz=timezone.utc)
-            send_email("Ride request cancelled", "Your ride request has been cancelled", self.passenger.email)
-
-        else:
+        if self.status == 'waiting':
             self.match_requests()
 
         super(RideRequest, self).save(*args, **kwargs)

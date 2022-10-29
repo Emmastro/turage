@@ -11,7 +11,6 @@ from django.views.generic import CreateView
 class LoginUser(LoginView):
     template_name = "registration/login.html"
     model = TurageUser
-    # next_page = reverse_lazy('passenger-ride-request')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -19,9 +18,9 @@ class LoginUser(LoginView):
         return context
     
     def get_success_url(self):
-        print("role --> ", self.request.user.role)
+
         if self.request.user.role == TurageUser.PASSENGER:
-            return reverse_lazy('passenger-ride-request')
+            return reverse_lazy('ride-request')
         elif self.request.user.role == TurageUser.DRIVER:
             return reverse_lazy('ride-request-near')
 

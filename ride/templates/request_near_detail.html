@@ -4,171 +4,179 @@
 >
   <div class="container-fluid py-4">
     <div class="row">
-      <!-- Request ID: {{ride_request.id}}<br>
-      Origin: {{ride_request.origin_waypoint}}<br>
-      Destination: {{ride_request.destination_waypoint}}<br>
-      Number of passengers: {{ride_request.number_passengers}}<br>
-      Time requested: {{ride_request.time_requested}}<br>
-
-      Time to leave: {{ride_request.time_to_leave}}<br>
-      Driver: {{ride_request.driver}}<br>
-      
-      Passenger username: {{ride_request.passenger.username}}<br>
-      Passenger university (MVP): {{ride_request.passenger.university}}<br>
-
-      Request status: {{ride_request.status}}<br>
-      Request time accepted: {{ride_request.time_accepted}}<br>
-      Request time cancelled (if cancelled): {{ride_request.time_cancelled}}<br>
-      Request time finished (set when finished): {{ride_request.time_finished}}<br>
-      Request price: {{ride_request.price}}<br>
-      Request estimated time: {{ride_request.estimated_time}}<br>
-      Request actual time: {{ride_request.actual_time}}<br>
-      Request distance: {{ride_request.distance}}<br>
-      Request mactched{{ride_request.matched}}<br> -->
-
-
       <div class="col-lg-8 mx-auto">
-
         <div class="card mb-4">
           <div class="card-header p-3 pb-0">
-          <div class="d-flex justify-content-between align-items-center">
-          <div class="w-50">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="w-50">
+                <a class="btn" href="{% url 'ride-request-near' %}">
+                  <div class="d-flex align-items-center py-1">
+                    <span class="material-icons">arrow_back</span>
+                    <div class="ms-2">
+                      <h6 class="text-sm font-weight-normal my-auto">BACK</h6>
+                    </div>
+                  </div>
+                </a>
 
-            <a class="btn" href={% url 'ride-request-near' %}>
-              <div class="d-flex align-items-center py-1">
-                <span class="material-icons">arrow_back</span>
-                <div class="ms-2">
-                  <h6 class="text-sm font-weight-normal my-auto">
-                    BACK
-                  </h6>
+                <h4>Request Details</h4>
+                <p class="text-md mb-0">
+                  Request no. <b>{{ride_request.id}}</b>
+                </p>
+                <p class="text-md mb-0">
+                  Request Time: <b>{{ride_request.time_requested}}</b>
+                </p>
+              </div>
+            </div>
+
+            <div class="card-body p-3 pt-0">
+              <hr class="horizontal dark mt-0 mb-4" />
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-12">
+                  <div class="d-flex">
+                    <div>
+                      <h2 class="text-xl mb-0 mt-2">
+                        {{ride_request.passenger.short_name}}
+                      </h2>
+                      <p class="text-sm mb-3 mt-4">
+                        {{ride_request.passenger.university}}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-            </a>
+              <hr class="horizontal dark mt-4 mb-4" />
 
-            <h4>Request Details</h4>
-            <p class="text-md mb-0">
-            Request no. <b>{{ride_request.id}}</b> 
-            </p>
-            <p class="text-md mb-0">
-            Request Time: <b>{{ride_request.time_requested}}</b>
-            </p>
-        </div>
-          </div>
-
-          <div class="card-body p-3 pt-0">
-            <hr class="horizontal dark mt-0 mb-4">
-            <div class="row">
-            <div class="col-lg-6 col-md-6 col-12">
-            <div class="d-flex">
-              <div>
-                <h2 class="text-xl mb-0 mt-2">{{ride_request.passenger.short_name}}</h2>
-                <p class="text-sm mb-3 mt-4">{{ride_request.passenger.university}}</p>
-              </div>
-            </div>
-            </div>
-            </div>
-
-            <hr class="horizontal dark mt-4 mb-4">
-
-            <div class="row">
-              <div class="col-lg-3 col-md-6 col-12">
-                <h6 class="mb-3">Track request</h6>
+              <div class="row">
+                <div class="col-lg-3 col-md-6 col-12">
+                  <h6 class="mb-3">Track request</h6>
 
                   <div class="timeline timeline-one-side">
                     <div class="timeline-block mb-3">
                       <span class="timeline-step">
-                      <i class="material-icons text-secondary text-lg">location_on</i>
+                        <i class="material-icons text-secondary text-lg"
+                          >location_on</i
+                        >
                       </span>
                       <div class="timeline-content">
-                      <h6 class="text-dark text-sm font-weight-bold mb-0">{{ride_request.origin_waypoint}}</h6>
-                      <p class="text-secondary font-weight-normal text-xs mt-1 mb-0">{{ride_request.time_to_leave}}</p>
+                        <h6 class="text-dark text-sm font-weight-bold mb-0">
+                          {{ride_request.origin_waypoint}}
+                        </h6>
+                        <p
+                          class="text-secondary font-weight-normal text-xs mt-1 mb-0"
+                        >
+                          {{ride_request.time_to_leave}}
+                        </p>
                       </div>
                     </div>
 
                     <div class="timeline-block mb-3">
                       <span class="timeline-step">
-                      <i class="material-icons text-secondary text-lg">location_on</i>
+                        <i class="material-icons text-secondary text-lg"
+                          >location_on</i
+                        >
                       </span>
                       <div class="timeline-content">
-                      <h6 class="text-dark text-sm font-weight-bold mb-0">{{ride_request.destination_waypoint}}</h6>
-                      <p class="text-secondary font-weight-normal text-xs mt-1 mb-0">22 DEC 7:21 AM</p>
+                        <h6 class="text-dark text-sm font-weight-bold mb-0">
+                          {{ride_request.destination_waypoint}}
+                        </h6>
+                        <p
+                          class="text-secondary font-weight-normal text-xs mt-1 mb-0"
+                        >
+                          {{ride_request.time_finished}}
+                        </p>
                       </div>
-                    </div>   
-                    
+                    </div>
                   </div>
                   <h6>{{ride_request.to_string_distance}}</h6>
+                </div>
 
+                <div class="col-lg-5 col-md-6 col-12">
+                  <h6 class="mb-3">Ride details</h6>
+
+                  <ul class="list-group">
+                    <li
+                      class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"
+                    >
+                      <div class="d-flex flex-column">
+                        <span class="text-sm mb-2"
+                          >Number of passengers:
+                          <span class="text-dark ms-2 font-weight-bold"
+                            >{{ride_request.number_passengers}}</span
+                          ></span
+                        >
+                        <span class="text-sm mb-2"
+                          >Driver Name:
+                          <span class="text-dark font-weight-bold ms-2"
+                            >{{ride_request.driver.short_name}}</span
+                          ></span
+                        >
+                        <span class="text-sm mb-2"
+                          >Request Price:
+                          <span class="text-dark ms-2 font-weight-bold"
+                            >{{ride_request.to_string_price}}</span
+                          ></span
+                        >
+                        <span class="text-sm"
+                          >Request estimated time:
+                          <span class="text-dark ms-2 font-weight-bold"
+                            >{{ride_request.estimated_time}}</span
+                          ></span
+                        >
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="col-lg-3 col-12 ms-auto">
+                  <h6 class="mb-3">Request Status</h6>
+                  <div class="d-flex justify-content-between">
+                    <span class="mb-2 text-sm">Status:</span>
+                    <span
+                      class="badge badge-sm bg-gradient-success d-flex justify-content-center align-items-center"
+                      >{{ride_request.status}}</span
+                    >
+                  </div>
+                </div>
               </div>
-
-              <div class="col-lg-5 col-md-6 col-12">             
-
-                <h6 class="mb-3">Ride details</h6>
+              <form method="post" action="">
+                {% csrf_token %}
+              <div class="row mb-4">
                 
-                <ul class="list-group">
-                  <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <span class="text-sm mb-2">Number of passengers: <span class="text-dark ms-2 font-weight-bold">{{ride_request.number_passengers}}</span></span>
-                      <span class="mb-2 text-xs">Driver Name: <span class="text-dark font-weight-bold ms-2">{{ride_request.driver}}</span></span>
-                      <span class="mb-2 text-xs">Request Price: <span class="text-dark ms-2 font-weight-bold">{{ride_request.price}}</span></span>
-                      <span class="text-xs">Request estimated time: <span class="text-dark ms-2 font-weight-bold">{{ride_request.estimated_time}}</span></span>
+                  <div class="col-lg-2 col-md-6 col-12 mt-4">
+                    <button
+                      class="d-flex align-items-center py-2 px-2 bg-secondary shadow-secondary text-white rounded btn"
+                    type="submit" name="cancel" value="1">
+                      <div class="ms-2">
+                        <h6
+                          class="text-sm font-weight-normal my-auto text-white py-1 font-weight-bold"
+                        >
+                          CANCEL
+                        </h6>
+                      </div>
+                    </button>
+                  </div>
 
+                  <div class="col-lg-2 col-md-6 col-12 mt-4">
+                    <button type="submit" name="pickup" value="1"
+                      class="d-flex align-items-center py-2 px-2 bg-gradient-primary shadow-secondary text-white rounded btn"
+                    >
+                      <div class="ms-2">
+                        <h6
+                          class="text-sm font-weight-normal my-auto text-white py-1 font-weight-bold"
+                        >
+                          PICKUP
+                        </h6>
+                      </div>
                     </div>
-
-                  </li>
-
-                </ul>
-
+                  </button>
+                
               </div>
-
-
-              <div class="col-lg-3 col-12 ms-auto">
-                <h6 class="mb-3">Request Status</h6>
-                <div class="d-flex justify-content-between">
-                  <span class="mb-2 text-sm">
-                      Status:
-                  </span>
-
-                  <span class="badge badge-sm bg-gradient-success d-flex justify-content-center align-items-center">{{ride_request.status}}</span>
-                </div>
-
-                                
-              </div>
-
-            </div>
-
-            <div class="row mb-4">             
-              
-
-              <div class="col-lg-2 col-md-6 col-12 mt-4">
-                <div class="d-flex align-items-center py-2 px-2 bg-secondary shadow-secondary text-white rounded btn">
-                  <div class="ms-2">
-                    <h6 class="text-sm font-weight-normal my-auto text-white py-1 font-weight-bold">
-                      CANCEL
-                    </h6>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-2 col-md-6 col-12 mt-4">
-                <div class="d-flex align-items-center py-2 px-2 bg-gradient-primary shadow-secondary text-white rounded btn">
-                  <div class="ms-2">
-                    <h6 class="text-sm font-weight-normal my-auto text-white py-1 font-weight-bold">
-                      PICKUP
-                    </h6>
-                  </div>
-                </div>
-              </div>
-              
+            </form>
             </div>
           </div>
         </div>
-
       </div>
-
-    </div>
-
-      
     </div>
   </div>
 </main>
