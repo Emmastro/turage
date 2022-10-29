@@ -80,12 +80,32 @@ class MyRequestsDetailView(DetailView):
     context_object_name = "ride_request"
 
 
+
 class RideRequestNearDetailView(DetailView):
 
     model = RideRequest
     fields = "__all__"
     template_name = "request_near_detail.html"
     context_object_name = "ride_request"
+
+    def post(self, *args, **kwargs):
+        
+        self.object = self.get_object()
+
+
+        try:
+            if self.request.POST['cancel'] == '1':
+                pass
+                # TODO: should hide the request from this particular driver (or put it on the botton of the list)
+                #self.object.set_status_cancelled()
+        except Exception as e:
+            print(e)
+            print(self.request.POST)
+            if self.request.POST['pickup'] == '1':
+                self.object.set_status_accepted()
+        else:
+            pass
+        return render(self.request, self.template_name, self.get_context_data())
 
 
 # class RidingRequestViewSet(ModelViewSet):
