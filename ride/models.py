@@ -8,6 +8,8 @@ from datetime import datetime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
+from mail.main import send_email
+
 
 ALLOWED_TIME_DIFFERENCE = 30
 
@@ -153,9 +155,7 @@ class RideRequest(models.Model):
 
     time_requested = models.DateTimeField(auto_now_add=True, null=True)
 
-    # the suggested time to leave. We consider by default users wants to leave as soon as possible
-    # but they can choose to leave at a later time (in 1h, 2h, 3h, etc)
-    time_to_leave = models.DateTimeField(auto_now_add=True, null=True)
+    time_to_leave = models.DateTimeField(null=True)
 
     # Updates When a driver accepts driving request
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True)
@@ -189,22 +189,19 @@ class RideRequest(models.Model):
         if self.status == 'accepted':
             self.time_accepted = datetime.now(tz=timezone.utc)
             # alternative for datetime.now(tz=timezone.utc) ==> datetime.utcnow()
+            send_email("Ride request accepted", "Your ride request has been accepted", self.passenger.email)
+
         elif self.status == 'finished':
             self.time_finished = datetime.now(tz=timezone.utc)
+            send_email("How was the ride?", "Feedback on the ride", self.passenger.email)
 
         elif self.status == 'cancelled':
             # TODO: should allow both drivers and passengers to cancel a request
             self.time_cancelled = datetime.now(tz=timezone.utc)
+            send_email("Ride request cancelled", "Your ride request has been cancelled", self.passenger.email)
 
         else:
-            # TODO: logging.info("check if the requests can be matched")
-
-            super(RideRequest, self).save(*args, **kwargs)
-
-            # TODO: remove comment to match the request
-            logging.warning("not checking matching requests")
-            # self.match_requests()
-            return
+            self.match_requests()
 
         super(RideRequest, self).save(*args, **kwargs)
 
@@ -247,7 +244,12 @@ class RideRequest(models.Model):
                 if i != j and path_i in path_j:
                     matches.append((path_i, path_j))
 
-        print("Match found: ", matches)
+        # TODO: an email should be sent to all the parties for whom a match was found
+        send_email(
+            "Your request has been matched",
+            f"Your request  with id {self.id} has been matched with {matches}",
+            self.passenger.email)
+
 
     def get_shortest_path(self, waypoint1, waypoint2):
         """
@@ -304,6 +306,7 @@ class RideRequest(models.Model):
             shortest_path.insert(0, waypoint2)
 
         logging.info(f"Shortest path found: {shortest_path}")
+
         return shortest_path
 
     @property

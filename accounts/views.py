@@ -2,6 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from accounts.forms import DriverRegistrationForm, PassengerRegistrationForm
+from mail.main import send_email
 
 from ride.models import Passenger, TurageUser, Driver
 from django.views.generic import CreateView
@@ -45,6 +46,8 @@ class DriverRegistration(CreateView):
     def form_valid(self, form):
         valid = super(DriverRegistration, self).form_valid(form)
 
+        # TODO: set email content as template, and separate them from the python code
+        send_email("Welcome to Turage", "You have successfully registered as a driver", self.object.email)
         login(self.request, self.object)
 
         return valid
@@ -56,7 +59,7 @@ class PassengerRegistration(CreateView):
     template_name = "registration/passenger_registration.html"
 
     def get_success_url(self):
-        return reverse_lazy('passenger-ride-request')
+        return reverse_lazy('ride-request')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,7 +68,8 @@ class PassengerRegistration(CreateView):
 
     def form_valid(self, form):
         valid = super(PassengerRegistration, self).form_valid(form)
-
+        
+        send_email("Welcome to Turage", "You have successfully registered as a passenger", self.object.email)
         login(self.request, self.object)
 
         return valid
