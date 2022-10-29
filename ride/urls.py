@@ -15,5 +15,4 @@ urlpatterns = [
     path("ride/passenger-request", views.PassengerRideRequestView.as_view(),
          name="ride-request"),
     path('', views.home, name='home'),
-    path('automotive', views.automotive, name='automotive'),
 ]
