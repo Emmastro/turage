@@ -18,12 +18,11 @@ class LoginUser(LoginView):
         return context
     
     def get_success_url(self):
-        print(self.request.user)
-        if self.request.user == 'driver1' :
-            print("TRUE")
-        else : 
-            print("NOOOO")
-        return reverse_lazy('passenger-ride-request')
+        print("role --> ", self.request.user.role)
+        if self.request.user.role == TurageUser.PASSENGER:
+            return reverse_lazy('passenger-ride-request')
+        elif self.request.user.role == TurageUser.DRIVER:
+            return reverse_lazy('ride-request-near')
 
 
 class LogoutUser(LogoutView):

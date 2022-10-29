@@ -1,3 +1,5 @@
+from email.policy import default
+from typing import Iterable, Optional
 from django.contrib.auth.models import AbstractUser
 import logging
 
@@ -12,10 +14,24 @@ ALLOWED_TIME_DIFFERENCE = 30
 
 # TODO: move user related models to accounts
 
+CURRENCY = "$"
+DISTANCE_UNIT = "km"
+
+
 class TurageUser(AbstractUser):
     """
     User profile.
     """
+
+    PASSENGER = 1
+    DRIVER = 2
+
+    ROLE_CHOICES = (
+        (PASSENGER, 'Passenger'),
+        (DRIVER, 'Driver'),
+    )
+    role = models.PositiveSmallIntegerField(
+        choices=ROLE_CHOICES, blank=True, null=True)
 
     gender = models.CharField(max_length=6, choices=[
                               ('Male', 'M'), ('Female', 'F')], blank=True)
@@ -30,7 +46,15 @@ class TurageUser(AbstractUser):
 
     class Meta:
 
-        verbose_name = 'Abstract User'
+        verbose_name = 'Turage User'
+
+    @property
+    def full_name(self):
+        return self.get_full_name()
+
+    @property
+    def short_name(self):
+        return self.get_short_name()
 
 
 class Car(models.Model):
@@ -92,22 +116,29 @@ class Driver(TurageUser):
 
     driver_license = models.CharField(max_length=50)
     direction = models.IntegerField(default=0)
+    # TODO: set the roles on the group, and use it to handle user permission levels
+
     # TODO: add additional field for content from the driving licence
     #car = models.ForeignKey(Car, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        self.role = TurageUser.DRIVER
+        super(TurageUser, self).save(*args, **kwargs)
+
     class Meta:
-
         verbose_name = 'Driver'
-
 
 class Passenger(TurageUser):
     # TODO: would be community to be more general
     university = models.CharField(max_length=250)
-
+    
+    def save(self, *args, **kwargs):
+        self.role = TurageUser.PASSENGER
+        super(TurageUser, self).save(*args, **kwargs)
+    
     class Meta:
         verbose_name = 'Passenger'
-
-
+    
 class RideRequest(models.Model):
     """
     Represents a request for a ride.
@@ -274,6 +305,37 @@ class RideRequest(models.Model):
 
         logging.info(f"Shortest path found: {shortest_path}")
         return shortest_path
+
+    @property
+    def to_string_price(self):
+        if not self.price:
+            return "-"
+        else:
+            # TODO: currency should be linked to the country of the passenger. Could add it on the preference too
+            return f"{CURRENCY} {self.price}"
+
+    @property
+    def to_string_distance(self):
+        if not self.distance:
+            return "-"
+        else:
+            # TODO: set unit on the user preferences
+            return f"{self.distance} {DISTANCE_UNIT}"
+
+    @property
+    def to_string_driver(self):
+        if not self.driver:
+            return "Not assigned"
+        else:
+            return f"{self.driver.first_name} {self.driver.last_name}"
+
+    @property
+    def to_string_estimated_time(self):
+        if not self.estimated_time:
+            return "-"
+        else:
+            # TODO: format time
+            return f"{self.estimated_time}"
 
 
 class RideRequestMatched(models.Model):
