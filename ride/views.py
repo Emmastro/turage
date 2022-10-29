@@ -12,10 +12,19 @@ def home(request):
 
     return redirect('ride-request')
 
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
 
-def automotive(request):
+def handler500(request):
+    return render(request, '500.html', status=500)
 
-    return render(request, 'automotive.html')
+
+def handler403(request, exception):
+    return render(request, '403.html', status=403)
+
+def handler400(request, exception):
+    return render(request, '400.html', status=400)
+
 
 # TODO: separate passenger and driver views into different applications
 # Passenger views
@@ -76,7 +85,7 @@ class RideRequestNearDetailView(DetailView):
     model = RideRequest
     fields = "__all__"
     template_name = "request_near_detail.html"
-    context_object_name = "ride_requests"
+    context_object_name = "ride_request"
 
 
 # class RidingRequestViewSet(ModelViewSet):
