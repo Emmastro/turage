@@ -14,17 +14,17 @@
 
 # Use an official lightweight Python image.
 # https://hub.docker.com/_/python
-FROM python:3.10-slim
+FROM python:3.10-alpine
 
-ENV APP_HOME /app
+ENV PYTHONUNBUFFERED 1
 WORKDIR $APP_HOME
 
 # Removes output stream buffering, allowing for more efficient logging
-ENV PYTHONUNBUFFERED 1
+#ENV PYTHONUNBUFFERED 1
 
 # Install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy local code to the container image.
 COPY . .
@@ -35,4 +35,5 @@ COPY . .
 # to be equal to the cores available.
 # Timeout is set to 0 to disable the timeouts of the workers to allow Cloud Run to handle instance scaling.
 ENV PORT=8000
-CMD exec gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0 turage.wsgi:application
+CMD python manage.py runserver 0.0.0.0:$PORT
+# CMD exec gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0 turage.wsgi:application
