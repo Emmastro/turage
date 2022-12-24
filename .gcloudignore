@@ -1,7 +1,9 @@
 env/
-.env
-turage/static/
+venv/
+#.env*
 db.sqlite3
 .vscode
 __pycache__/
+.~lock.*
+static/
 .git/

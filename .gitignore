@@ -1,7 +1,6 @@
 env/
 venv/
-.env*
-.venv*
+#.env*
 db.sqlite3
 .vscode
 __pycache__/

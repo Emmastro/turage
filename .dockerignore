@@ -1,6 +1,6 @@
 env/
-.env
-turage/static/
+# .env
+# turage/static/ --> TODO: should ignore this in production
 db.sqlite3
 .vscode
 __pycache__/

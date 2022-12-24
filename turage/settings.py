@@ -14,17 +14,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 env = environ.Env(DEBUG=(bool, True))
 env_file = os.path.join(BASE_DIR, ".env")
 
-# Attempt to load the Project ID into the environment, safely failing on error.
 try:
     _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
+
 except google.auth.exceptions.DefaultCredentialsError:
     pass
 
 if os.path.isfile(env_file):
     # Use a local secret file, if provided
-
+    print("Using local setting")
     env.read_env(env_file)
-# [START_EXCLUDE]
+
 elif os.getenv("TRAMPOLINE_CI", None):
     # Create local settings if running with CI, for unit testing
 
@@ -40,7 +40,7 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
 
     client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get("SETTINGS_NAME", "turage-django-settings") # TODO: add on .env
+    settings_name = os.environ.get("SETTINGS_NAME", "turage-settings") # TODO: add on .env
     name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
     payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
 
@@ -116,7 +116,7 @@ WSGI_APPLICATION = "turage.wsgi.application"
 # [START cloudrun_django_database_config]
 # Use django-environ to parse the connection string
 
-if not os.getenv("DATABASE_URL"):
+if not os.getenv("USE_LOCAL_DB"):
 
     DATABASES = {
     'default': {
@@ -126,15 +126,22 @@ if not os.getenv("DATABASE_URL"):
     }
 
 else:
-    DATABASES = {"default": env.db()}
-
-
+    # connect to postgresql database
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'turage',
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': 5432,
+        }}
+    
 # If the flag as been set, configure to use proxy
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-    DATABASES["default"]["HOST"] = "127.0.0.1"
-    DATABASES["default"]["PORT"] = 5400
+# if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+#     DATABASES["default"]["HOST"] = "127.0.0.1"
+#     DATABASES["default"]["PORT"] = 5400
 
-# [END cloudrun_django_database_config]
 
 # Password validation
 
@@ -173,7 +180,6 @@ AUTH_USER_MODEL = 'ride.TurageUser'
 # Define static storage via django-storages[google]
 
 if os.getenv("GS_BUCKET_NAME", None) == None:
-    print("local")
     STATIC_URL = "/static/"
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     DEFAULT_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"

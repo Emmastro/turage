@@ -16,6 +16,11 @@
 # https://hub.docker.com/_/python
 FROM python:3.10-slim
 
+# Install make
+RUN apt-get update 
+
+#&& apt-get install -y make
+
 ENV APP_HOME /app
 WORKDIR $APP_HOME
 
@@ -28,6 +33,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy local code to the container image.
 COPY . .
+
+# TODO: should not collect static in production, this is only for testing. Static are migrated when deploying 
+# RUN python manage.py collectstatic --noinput
 
 # Run the web service on container startup. Here we use the gunicorn
 # webserver, with one worker process and 8 threads.
