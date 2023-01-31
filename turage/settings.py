@@ -22,7 +22,6 @@ except google.auth.exceptions.DefaultCredentialsError:
 
 if os.path.isfile(env_file):
     # Use a local secret file, if provided
-    print("Using local setting")
     env.read_env(env_file)
 
 elif os.getenv("TRAMPOLINE_CI", None):
@@ -136,7 +135,7 @@ else:
             'HOST': os.getenv('DB_HOST'),
             'PORT': 5432,
         }}
-    
+print(DATABASES) 
 # If the flag as been set, configure to use proxy
 # if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
 #     DATABASES["default"]["HOST"] = "127.0.0.1"
@@ -196,3 +195,5 @@ else:
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_BACKEND = 'django_ses.SESBackend'

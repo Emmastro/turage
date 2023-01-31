@@ -1,15 +1,11 @@
-from email.policy import default
-from typing import Iterable, Optional
 from django.contrib.auth.models import AbstractUser
 import logging
 
 from django.db import models
-from datetime import datetime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from mail.main import send_email
-
+from django.core.mail import send_mail
 
 ALLOWED_TIME_DIFFERENCE = 30
 
@@ -188,7 +184,11 @@ class RideRequest(models.Model):
 
     def set_status_accepted(self):
         self.status = "accepted"
-        send_email("Ride request accepted", "Your ride request has been accepted", self.passenger.email)
+        send_mail(
+            "Ride request accepted",
+            "Your ride request has been accepted",
+            "info@turagerides.com",
+            [self.passenger.email])
 
         self.time_accepted = timezone.now()
         self.save()
@@ -196,14 +196,22 @@ class RideRequest(models.Model):
     def set_status_cancelled(self):
         self.status = "cancelled"
         self.time_cancelled = timezone.now()
-        send_email("Ride request cancelled", "Your ride request has been cancelled", self.passenger.email)
+        send_mail(
+            "Ride request cancelled",
+            "Your ride request has been cancelled", 
+            "info@turagerides.com",
+            [self.passenger.email])
 
         self.save()
 
     def set_status_finished(self):
         self.status = "finished"
         self.time_finished = timezone.now()
-        send_email("Ride request finished", "Your ride request has been finished", self.passenger.email)
+        send_mail(
+            "Ride request finished",
+            "Your ride request has been finished",
+            "info@turagerides.com",
+            [self.passenger.email])
 
         self.save()
 
@@ -258,10 +266,11 @@ class RideRequest(models.Model):
                     matches.append((path_i, path_j))
 
         # TODO: an email should be sent to all the parties for whom a match was found
-        send_email(
+        send_mail(
             "Your request has been matched",
             f"Your request  with id {self.id} has been matched with {matches}",
-            self.passenger.email)
+            "info@turagerides.com",
+            [self.passenger.email])
 
 
     def get_shortest_path(self, waypoint1, waypoint2):

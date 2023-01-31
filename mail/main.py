@@ -5,7 +5,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 
-def send_email(subject, content, recipient):
+def send_email_sendgrid(subject, content, recipient):
     print("recipient: ", recipient)
     message = Mail(
         from_email='e.murairi@alustudent.com',
@@ -20,3 +20,4 @@ def send_email(subject, content, recipient):
 
     except Exception as e:
         print(e.message)
+
