@@ -115,7 +115,7 @@ WSGI_APPLICATION = "turage.wsgi.application"
 # [START cloudrun_django_database_config]
 # Use django-environ to parse the connection string
 
-if not os.getenv("USE_LOCAL_DB"):
+if os.getenv("USE_LOCAL_DB"):
 
     DATABASES = {
     'default': {
