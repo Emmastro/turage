@@ -1,16 +1,11 @@
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-<<<<<<< HEAD
 from accounts.forms import DriverRegistrationForm, PassengerRegistrationForm
 from django.core.mail import send_mail
-=======
+
 from django.shortcuts import render, redirect, reverse
 from accounts.forms import DriverRegistrationForm, PassengerRegistrationForm
-<<<<<<< HEAD
->>>>>>> 193c23f (Passenger Registration)
-=======
->>>>>>> b3eb8ba (Passenger Registration)
 
 from ride.models import Passenger, TurageUser, Driver
 from django.views.generic import CreateView
@@ -19,10 +14,6 @@ from django.views.generic import CreateView
 class LoginUser(LoginView):
     template_name = "registration/login.html"
     model = TurageUser
-<<<<<<< HEAD
-=======
-    # next_page = reverse_lazy('passenger-ride-request')
->>>>>>> 64ebfd8 (Implemented redesign changes)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -30,20 +21,11 @@ class LoginUser(LoginView):
         return context
     
     def get_success_url(self):
-<<<<<<< HEAD
 
         if self.request.user.role == TurageUser.PASSENGER:
             return reverse_lazy('ride-request')
         elif self.request.user.role == TurageUser.DRIVER:
             return reverse_lazy('ride-request-near')
-=======
-        print(self.request.user)
-        if self.request.user == 'driver1' :
-            print("TRUE")
-        else : 
-            print("NOOOO")
-        return reverse_lazy('passenger-ride-request')
->>>>>>> 64ebfd8 (Implemented redesign changes)
 
 
 class LogoutUser(LogoutView):
@@ -58,31 +40,17 @@ class DriverRegistration(CreateView):
     def get_success_url(self):
         return reverse_lazy('ride-request-near')
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["page_title"] = 'Driver Registration'
         return context
-=======
-=======
->>>>>>> b3eb8ba (Passenger Registration)
 class PassengerRegistration(CreateView):
     model = Passenger
     form_class = PassengerRegistrationForm
     template_name= "registration/passenger_registration.html"
-<<<<<<< HEAD
-=======
-
-    def get_success_url(self):
-        return reverse_lazy('ride-request-near')
-
->>>>>>> b3eb8ba (Passenger Registration)
 
     def get_success_url(self):
         return reverse_lazy('passenger-ride-request')
-
->>>>>>> 193c23f (Passenger Registration)
 
     def form_valid(self, form):
         valid = super(DriverRegistration, self).form_valid(form)
