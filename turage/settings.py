@@ -197,3 +197,9 @@ else:
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
+
+AWS_SES_REGION_ENDPOINT = "email.us-east-1.amazonaws.com"
+
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", None)
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", None)
+AWS_SES_REGION_NAME = os.environ.get("AWS_SES_REGION_NAME", None)
