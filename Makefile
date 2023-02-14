@@ -1,6 +1,11 @@
 SHELL := /bin/bash
 include .env
 
+push:
+	git add .
+	git commit -m '${message}'
+	git push
+
 create_environment:
 	python3 -m venv env
 

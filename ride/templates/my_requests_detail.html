@@ -19,10 +19,10 @@
                 </a>
                 <h4>Request Details</h4>
                 <p class="text-md mb-0">
-                  Request no. <b>{{ride_request.id}}</b>
+                  Request no. <b>{{ride_requests.id}}</b>
                 </p>
                 <p class="text-md mb-0">
-                  Request Time: <b>{{ride_request.time_requested}}</b>
+                  Request Time: <b>{{ride_requests.time_requested}}</b>
                 </p>
               </div>
             </div>
@@ -34,10 +34,10 @@
                   <div class="d-flex">
                     <div>
                       <h2 class="text-xl mb-0 mt-2">
-                        {{ride_request.passenger.short_name}}
+                        {{ride_requests.passenger.short_name}}
                       </h2>
                       <p class="text-sm mb-3 mt-4">
-                        {{ride_request.passenger.university}}
+                        {{ride_requests.passenger.university}}
                       </p>
                     </div>
                   </div>
@@ -57,12 +57,12 @@
                       </span>
                       <div class="timeline-content">
                         <h6 class="text-dark text-sm font-weight-bold mb-0">
-                          {{ride_request.origin_waypoint}}
+                          {{ride_requests.origin_waypoint}}
                         </h6>
                         <p
                           class="text-secondary font-weight-normal text-xs mt-1 mb-0"
                         >
-                          {{ride_request.time_to_leave}}
+                          {{ride_requests.time_to_leave}}
                         </p>
                       </div>
                     </div>
@@ -75,17 +75,17 @@
                       </span>
                       <div class="timeline-content">
                         <h6 class="text-dark text-sm font-weight-bold mb-0">
-                          {{ride_request.destination_waypoint}}
+                          {{ride_requests.destination_waypoint}}
                         </h6>
                         <p
                           class="text-secondary font-weight-normal text-xs mt-1 mb-0"
                         >
-                          22 DEC 7:21 AM
+                          <!-- 22 DEC 7:21 AM -->
                         </p>
                       </div>
                     </div>
                   </div>
-                  <h6>{{ride_request.to_string_distance}}</h6>
+                  <h6>{{ride_requests.to_string_distance}}</h6>
                 </div>
 
                 <div class="col-lg-5 col-md-6 col-12">
@@ -99,19 +99,19 @@
                         <span class="mb-2 text-xs"
                           >Driver Name:
                           <span class="text-dark font-weight-bold ms-2"
-                            >{{ride_request.to_string_driver}}</span
+                            >{{ride_requests.to_string_driver}}</span
                           ></span
                         >
                         <span class="mb-2 text-xs"
                           >Request Price:
                           <span class="text-dark ms-2 font-weight-bold"
-                            >{{ride_request.to_string_price}}</span
+                            >{{ride_requests.to_string_price}}</span
                           ></span
                         >
                         <span class="text-xs"
                           >Request estimated time:
                           <span class="text-dark ms-2 font-weight-bold"
-                            >{{ride_request.to_string_estimated_time}}</span
+                            >{{ride_requests.to_string_estimated_time}}</span
                           ></span
                         >
                       </div>
@@ -125,7 +125,7 @@
                     <span class="mb-2 text-sm">Status:</span>
                     <span
                       class="badge badge-sm bg-gradient-success d-flex justify-content-center align-items-center"
-                      >{{ride_request.status}}</span
+                      >{{ride_requests.status}}</span
                     >
                   </div>
                 </div>

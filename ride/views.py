@@ -77,6 +77,7 @@ class MyRequestsDetailView(DetailView):
     fields = "__all__"
     template_name = "my_requests_detail.html"
     context_object_name = "ride_request"
+    
 
 
 
@@ -118,6 +119,9 @@ class RideRequestNearDetailView(DetailView):
 
             if self.request.POST['pickup'] == '1':
                 self.object.set_status_accepted()
+
+                driver = Driver.objects.get(pk=self.request.user.pk)
+                self.object.set_driver(driver)
         else:
             pass
         return render(self.request, self.template_name, self.get_context_data())

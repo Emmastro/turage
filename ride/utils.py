@@ -1,6 +1,29 @@
 
 from .models import *
+from math import sin, cos, sqrt, atan2, radians
+import googlemaps
+from datetime import datetime
+import simplejson, urllib
 
+
+
+
+GOOGLE_MAPS_API_KEY ='AIzaSyCfyB96eJN8K9b6YzLZoLSoy8TN6-S7M5I'
+
+def calculate_distance_time(coords1, coords2):
+
+    return None
+
+# import googlemaps
+  
+# # Requires API key
+# gmaps = googlemaps.Client(key='Your_API_key')
+  
+# # Requires cities name
+# my_dist = gmaps.distance_matrix('Delhi','Mumbai')['rows'][0]['elements'][0]
+  
+# # Printing the result
+# print(my_dist)
 
 def get_string_to_list(string):
     try:

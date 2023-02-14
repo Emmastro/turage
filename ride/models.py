@@ -6,13 +6,20 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 from django.core.mail import send_mail
+import geopy.distance
+from .utils import calculate_distance_time
+
+import openrouteservice
+from openrouteservice import convert
+import folium
+
 
 ALLOWED_TIME_DIFFERENCE = 30
 
 
 # TODO: move user related models to accounts
 
-CURRENCY = "$"
+CURRENCY = "MUR"
 DISTANCE_UNIT = "km"
 
 
@@ -213,7 +220,11 @@ class RideRequest(models.Model):
             [self.passenger.email])
 
         self.save()
-
+    
+    def set_driver(self, driver):
+        self.driver = driver
+        self.save()
+    
     def save(self, *args, **kwargs):
         """
         Save a Riding request, and try to match with existing requests. If there is no match,
@@ -222,6 +233,20 @@ class RideRequest(models.Model):
         """
         if self.status == 'waiting':
             self.match_requests()
+
+            client = openrouteservice.Client(key='5b3ce3597851110001cf624806cab776b70447daa04149d2d8732f7f')
+
+            coords1 = (self.origin_waypoint.latitude,
+            self.origin_waypoint.longitude)
+
+            coords2 = (self.destination_waypoint.latitude,
+            self.destination_waypoint.longitude)
+
+            coords = ((coords1),(coords2))
+            res = client.directions(coords)
+            self.distance = round(res['routes'][0]['summary']['distance']/1000,1)
+            self.estimated_time = round(res['routes'][0]['summary']['duration']/60,1)
+            self.price = self.distance * 100
 
         super(RideRequest, self).save(*args, **kwargs)
 
@@ -336,15 +361,20 @@ class RideRequest(models.Model):
             return "-"
         else:
             # TODO: currency should be linked to the country of the passenger. Could add it on the preference too
-            return f"{CURRENCY} {self.price}"
+            return f"{CURRENCY} {round(self.price)}"
 
     @property
     def to_string_distance(self):
         if not self.distance:
             return "-"
         else:
+           
             # TODO: set unit on the user preferences
+            # 5b3ce3597851110001cf624806cab776b70447daa04149d2d8732f7f
+
+            
             return f"{self.distance} {DISTANCE_UNIT}"
+            # return f"{(round(res['routes'][0]['summary']['distance']/1000,1))} {(round(res['routes'][0]['summary']['duration']/60,1))}"
 
     @property
     def to_string_driver(self):
@@ -359,7 +389,8 @@ class RideRequest(models.Model):
             return "-"
         else:
             # TODO: format time
-            return f"{self.estimated_time}"
+            
+            return f"{self.estimated_time} min"
 
 
 class RideRequestMatched(models.Model):
