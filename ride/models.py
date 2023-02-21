@@ -5,13 +5,13 @@ from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from django.core.mail import send_mail
-import geopy.distance
-from .utils import calculate_distance_time
+from ride.utils import send_mail_custom
 
 import openrouteservice
-from openrouteservice import convert
-import folium
+#from openrouteservice import convert
+#import folium
+
+from django.conf import settings
 
 
 ALLOWED_TIME_DIFFERENCE = 30
@@ -190,7 +190,7 @@ class RideRequest(models.Model):
 
     def set_status_accepted(self):
         self.status = "accepted"
-        send_mail(
+        send_mail_custom(
             "Ride request accepted",
             "Your ride request has been accepted",
             "info@turagerides.com",
@@ -202,7 +202,7 @@ class RideRequest(models.Model):
     def set_status_cancelled(self):
         self.status = "cancelled"
         self.time_cancelled = timezone.now()
-        send_mail(
+        send_mail_custom(
             "Ride request cancelled",
             "Your ride request has been cancelled", 
             "info@turagerides.com",
@@ -213,7 +213,7 @@ class RideRequest(models.Model):
     def set_status_finished(self):
         self.status = "finished"
         self.time_finished = timezone.now()
-        send_mail(
+        send_mail_custom(
             "Ride request finished",
             "Your ride request has been finished",
             "info@turagerides.com",
@@ -234,7 +234,7 @@ class RideRequest(models.Model):
         if self.status == 'waiting':
             self.match_requests()
 
-            client = openrouteservice.Client(key='5b3ce3597851110001cf624806cab776b70447daa04149d2d8732f7f')
+            client = openrouteservice.Client(key=settings.OPENROUTE_API_KEY)
 
             coords1 = (self.origin_waypoint.latitude,
             self.origin_waypoint.longitude)
@@ -290,7 +290,7 @@ class RideRequest(models.Model):
                     matches.append((path_i, path_j))
 
         # TODO: an email should be sent to all the parties for whom a match was found
-        send_mail(
+        send_mail_custom(
             "Your request has been matched",
             f"Your request  with id {self.id} has been matched with {matches}",
             "info@turagerides.com",

@@ -124,6 +124,8 @@ if os.getenv("USE_LOCAL_DB"):
         }
     }
 
+
+
 else:
     # connect to postgresql database
     DATABASES = {
@@ -203,3 +205,7 @@ AWS_SES_REGION_ENDPOINT = "email.us-east-1.amazonaws.com"
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", None)
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", None)
 AWS_SES_REGION_NAME = os.environ.get("AWS_SES_REGION_NAME", None)
+
+OPENROUTE_API_KEY = os.environ.get("OPENROUTE_API_KEY", None)
+
+EMAIL_ENABLED = os.environ.get("EMAIL_ENABLED", None)

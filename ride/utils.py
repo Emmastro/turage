@@ -1,35 +1,33 @@
 
 from .models import *
-from math import sin, cos, sqrt, atan2, radians
-import googlemaps
-from datetime import datetime
-import simplejson, urllib
 
+from django.conf import settings
+from django.core.mail import send_mail
 
+#from math import sin, cos, sqrt, atan2, radians
+#import googlemaps
+#from datetime import datetime
+#import simplejson, urllib
 
-
-GOOGLE_MAPS_API_KEY ='AIzaSyCfyB96eJN8K9b6YzLZoLSoy8TN6-S7M5I'
-
-def calculate_distance_time(coords1, coords2):
-
-    return None
 
 # import googlemaps
-  
+
 # # Requires API key
 # gmaps = googlemaps.Client(key='Your_API_key')
-  
+
 # # Requires cities name
 # my_dist = gmaps.distance_matrix('Delhi','Mumbai')['rows'][0]['elements'][0]
-  
+
 # # Printing the result
 # print(my_dist)
+
 
 def get_string_to_list(string):
     try:
         return [int(a) for a in string.split(";")]
     except:
         return [int(string)]
+
 
 def add_multiple(waypoints, edges):
 
@@ -65,3 +63,13 @@ def add_multiple(waypoints, edges):
         for connection_id in connection_list[i]:
             waypoint.waypoints.add(all_waypoint_created[connection_id])
 
+
+def send_mail_custom(*args, **kwargs):
+    """
+    overrides default send_mail_custom to handle logging mail on dev
+    """
+    if settings.EMAIL_ENABLED:
+        send_mail(*args, **kwargs)
+    else:
+        print("Email disabled - logging emails")
+        # TODO: log email on the console

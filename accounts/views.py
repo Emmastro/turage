@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from accounts.forms import DriverRegistrationForm, PassengerRegistrationForm
-from django.core.mail import send_mail
+from ride.utils import send_mail_custom
 
 from django.shortcuts import render, redirect, reverse
 from accounts.forms import DriverRegistrationForm, PassengerRegistrationForm
@@ -56,7 +56,7 @@ class PassengerRegistration(CreateView):
         valid = super(DriverRegistration, self).form_valid(form)
 
         # TODO: set email content as template, and separate them from the python code
-        send_mail(
+        send_mail_custom(
             "Welcome to Turage",
             "You have successfully registered as a driver",
             "info@turagerides.com",
@@ -82,7 +82,7 @@ class PassengerRegistration(CreateView):
     def form_valid(self, form):
         valid = super(PassengerRegistration, self).form_valid(form)
         
-        send_mail(
+        send_mail_custom(
             "Welcome to Turage", "You have successfully registered as a passenger", 
             "info@turagerides.com",
             [self.object.email])
