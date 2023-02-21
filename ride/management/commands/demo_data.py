@@ -7,7 +7,6 @@ import pandas as pd
 from django.conf import settings
 
 from ride.utils import add_multiple
-add_multiple
 
 
 class Command(BaseCommand):
@@ -89,4 +88,4 @@ class Command(BaseCommand):
         # add location
         waypoints = pd.read_excel(self.spreadsheet, sheet_name='waypoints')
         edges = pd.read_excel(self.spreadsheet, sheet_name='edges')
-        add_multiple(waypoints, edges)
+        add_multiple(waypoints, edges, Edge, Waypoint)

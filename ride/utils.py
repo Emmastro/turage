@@ -1,25 +1,6 @@
-
-from .models import *
-
 from django.conf import settings
 from django.core.mail import send_mail
 
-#from math import sin, cos, sqrt, atan2, radians
-#import googlemaps
-#from datetime import datetime
-#import simplejson, urllib
-
-
-# import googlemaps
-
-# # Requires API key
-# gmaps = googlemaps.Client(key='Your_API_key')
-
-# # Requires cities name
-# my_dist = gmaps.distance_matrix('Delhi','Mumbai')['rows'][0]['elements'][0]
-
-# # Printing the result
-# print(my_dist)
 
 
 def get_string_to_list(string):
@@ -29,7 +10,7 @@ def get_string_to_list(string):
         return [int(string)]
 
 
-def add_multiple(waypoints, edges):
+def add_multiple(waypoints, edges, Edge, Waypoint):
 
     # TODO: add data validation
 
