@@ -5,14 +5,21 @@ from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from django.core.mail import send_mail
+from ride.utils import send_mail_custom
+
+import openrouteservice
+#from openrouteservice import convert
+#import folium
+
+from django.conf import settings
+
 
 ALLOWED_TIME_DIFFERENCE = 30
 
 
 # TODO: move user related models to accounts
 
-CURRENCY = "$"
+CURRENCY = "MUR"
 DISTANCE_UNIT = "km"
 
 
@@ -183,7 +190,7 @@ class RideRequest(models.Model):
 
     def set_status_accepted(self):
         self.status = "accepted"
-        send_mail(
+        send_mail_custom(
             "Ride request accepted",
             "Your ride request has been accepted",
             "info@turagerides.com",
@@ -195,7 +202,7 @@ class RideRequest(models.Model):
     def set_status_cancelled(self):
         self.status = "cancelled"
         self.time_cancelled = timezone.now()
-        send_mail(
+        send_mail_custom(
             "Ride request cancelled",
             "Your ride request has been cancelled", 
             "info@turagerides.com",
@@ -206,14 +213,18 @@ class RideRequest(models.Model):
     def set_status_finished(self):
         self.status = "finished"
         self.time_finished = timezone.now()
-        send_mail(
+        send_mail_custom(
             "Ride request finished",
             "Your ride request has been finished",
             "info@turagerides.com",
             [self.passenger.email])
 
         self.save()
-
+    
+    def set_driver(self, driver):
+        self.driver = driver
+        self.save()
+    
     def save(self, *args, **kwargs):
         """
         Save a Riding request, and try to match with existing requests. If there is no match,
@@ -222,6 +233,20 @@ class RideRequest(models.Model):
         """
         if self.status == 'waiting':
             self.match_requests()
+
+            client = openrouteservice.Client(key=settings.OPENROUTE_API_KEY)
+
+            coords1 = (self.origin_waypoint.latitude,
+            self.origin_waypoint.longitude)
+
+            coords2 = (self.destination_waypoint.latitude,
+            self.destination_waypoint.longitude)
+
+            coords = ((coords1),(coords2))
+            res = client.directions(coords)
+            self.distance = round(res['routes'][0]['summary']['distance']/1000,1)
+            self.estimated_time = round(res['routes'][0]['summary']['duration']/60,1)
+            self.price = self.distance * 100
 
         super(RideRequest, self).save(*args, **kwargs)
 
@@ -265,7 +290,7 @@ class RideRequest(models.Model):
                     matches.append((path_i, path_j))
 
         # TODO: an email should be sent to all the parties for whom a match was found
-        send_mail(
+        send_mail_custom(
             "Your request has been matched",
             f"Your request  with id {self.id} has been matched with {matches}",
             "info@turagerides.com",
@@ -336,15 +361,20 @@ class RideRequest(models.Model):
             return "-"
         else:
             # TODO: currency should be linked to the country of the passenger. Could add it on the preference too
-            return f"{CURRENCY} {self.price}"
+            return f"{CURRENCY} {round(self.price)}"
 
     @property
     def to_string_distance(self):
         if not self.distance:
             return "-"
         else:
+           
             # TODO: set unit on the user preferences
+            # 5b3ce3597851110001cf624806cab776b70447daa04149d2d8732f7f
+
+            
             return f"{self.distance} {DISTANCE_UNIT}"
+            # return f"{(round(res['routes'][0]['summary']['distance']/1000,1))} {(round(res['routes'][0]['summary']['duration']/60,1))}"
 
     @property
     def to_string_driver(self):
@@ -359,7 +389,8 @@ class RideRequest(models.Model):
             return "-"
         else:
             # TODO: format time
-            return f"{self.estimated_time}"
+            
+            return f"{self.estimated_time} min"
 
 
 class RideRequestMatched(models.Model):

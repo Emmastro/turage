@@ -7,5 +7,5 @@ google-cloud-secret-manager==2.12.0
 django-widget-tweaks==1.4.12
 pandas==1.5.0
 openpyxl==3.0.10
-sendgrid
 django-ses
+openrouteservice==2.3.3
