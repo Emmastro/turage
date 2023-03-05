@@ -188,7 +188,8 @@ class RideRequest(models.Model):
 
     def set_status_accepted(self):
         self.status = "accepted"
-        send_email("Ride request accepted", "Your ride request has been accepted", self.passenger.email)
+        send_email("Ride request accepted by" + self.driver.get_short_name + "at " + self.actual_time, +
+        " Your ride request has been accepted", self.passenger.email)
 
         self.time_accepted = timezone.now()
         self.save()
@@ -203,7 +204,7 @@ class RideRequest(models.Model):
     def set_status_finished(self):
         self.status = "finished"
         self.time_finished = timezone.now()
-        send_email("Ride request finished", "Your ride request has been finished", self.passenger.email)
+        send_email("Ride request completed", "Your ride request has been completed at " + self.actual_time, self.passenger.email)
 
         self.save()
 
